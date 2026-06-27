@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KALAMPER — Аккумуляторы нового поколения</title>
+  <meta name="description" content="KALAMPER — автомобильные аккумуляторы с технологией термоконтроля заряда. Срок службы вдвое дольше обычных батарей. Пусковые токи до 940 А. Производство Россия.">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#060B18">
+  <link rel="icon" href="./assets/brand/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/site.css">
+  <link rel="preload" as="image"
+    href="./assets/images/products/k65-hero-960.webp"
+    imagesrcset="./assets/images/products/k65-hero-640.webp 640w, ./assets/images/products/k65-hero-960.webp 960w, ./assets/images/products/k65-hero-1200.webp 1200w"
+    imagesizes="(max-width: 768px) 90vw, 46vw">
+  <script defer src="./assets/js/site.js"></script>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a class="brand-logo" href="./" aria-label="KALAMPER — на главную">
+        <img src="./assets/brand/kalamper-logo.svg" alt="KALAMPER" width="160" height="28">
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+        <a class="nav-link" href="#about">О бренде</a>
+        <a class="nav-link" href="#technologies">Технологии</a>
+        <a class="nav-link" href="#catalog">Каталог</a>
+        <a class="nav-link nav-link--cta" href="#contact">Связаться</a>
+      </nav>
+      <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav" aria-label="Открыть меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero" id="home">
+      <div class="hero-bg">
+        <div class="hero-grid"></div>
+        <div class="hero-aurora hero-aurora--1"></div>
+        <div class="hero-aurora hero-aurora--2"></div>
+        <div class="hero-aurora hero-aurora--3"></div>
+      </div>
+
+      <div class="hero-inner container">
+        <div class="hero-content" data-reveal>
+          <span class="hero-eyebrow">
+            <span class="hero-eyebrow-dot"></span>
+            Производство Россия · Гарантия 24 месяца
+          </span>
+          <h1 class="hero-title">
+            Аккумулятор,<br>
+            <em>который служит<br>вдвое дольше</em>
+          </h1>
+          <p class="hero-desc">
+            KALAMPER — батареи с уникальным процессом термоконтроля заряда. Технология нового поколения увеличивает ресурс пластин в два раза и обеспечивает уверенный пуск при любых условиях.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn--primary" href="#catalog">Смотреть каталог</a>
+            <a class="btn btn--outline" href="#about">О технологии</a>
+          </div>
+        </div>
+
+        <div class="hero-visual" data-reveal data-reveal-delay="150">
+          <div class="hero-product-wrap">
+            <div class="hero-glow"></div>
+            <img
+              class="hero-product-img"
+              src="./assets/images/products/k65-hero-960.webp"
+              srcset="./assets/images/products/k65-hero-640.webp 640w,
+                      ./assets/images/products/k65-hero-960.webp 960w,
+                      ./assets/images/products/k65-hero-1200.webp 1200w"
+              sizes="(max-width: 768px) 90vw, 46vw"
+              alt="KALAMPER 6СТ-65 — аккумулятор европейского стандарта"
+              width="960" height="768"
+              loading="eager" fetchpriority="high">
+            <div class="hero-badge">
+              <span class="hero-badge-model">6СТ-65</span>
+              <span class="hero-badge-spec">580 А · EN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a class="hero-scroll" href="#stats" aria-label="Прокрутить вниз">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+    </section>
+
+    <!-- ═══ STATS ═══ -->
+    <section class="stats-section" id="stats">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item" data-reveal>
+            <div class="stat-value"><span class="count" data-target="4">0</span><sup>+</sup></div>
+            <div class="stat-label">лет срок службы</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item" data-reveal data-reveal-delay="80">
+            <div class="stat-value"><span class="count" data-target="940">0</span> <sup>А</sup></div>
+            <div class="stat-label">максимальный пусковой ток</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item" data-reveal data-reveal-delay="160">
+            <div class="stat-value"><span class="count" data-target="24">0</span></div>
+            <div class="stat-label">месяца гарантии</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item" data-reveal data-reveal-delay="240">
+            <div class="stat-value"><span class="count" data-target="2">0</span><sup>×</sup></div>
+            <div class="stat-label">дольше служит vs обычных</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ BRAND STORY ═══ -->
+    <section class="section story-section" id="about">
+      <div class="container">
+        <div class="story-grid">
+          <div class="story-content" data-reveal>
+            <span class="eyebrow">О бренде</span>
+            <h2 class="section-title">Технология заряда<br>нового поколения</h2>
+            <p class="story-lead">
+              В основе каждого KALAMPER — запатентованный процесс формирования: заряд проходит на оборудовании последнего поколения, которое непрерывно контролирует температуру электролита.
+            </p>
+            <p class="story-text">
+              Перегрев при зарядке — главная причина деградации пластин. Термоконтроль устраняет эту проблему на производстве, а не в процессе эксплуатации. Результат — увеличенное количество пластин сохраняет структуру на всём сроке службы, продлевая ресурс аккумулятора вдвое по сравнению с обычными батареями.
+            </p>
+            <p class="story-text">
+              Производятся на высокотехнологичных заводах России с контролем по стандартам ISO. Технологическая карта фиксирует состав и молекулярную структуру пластин, рецептуру активной пасты, пусковой ток и вибродемпфирующие характеристики.
+            </p>
+            <div class="story-tags">
+              <span class="tag">Производство Россия</span>
+              <span class="tag">Контроль ISO</span>
+              <span class="tag">Гарантия 24 мес.</span>
+            </div>
+          </div>
+
+          <div class="story-images" data-reveal data-reveal-delay="150">
+            <div class="story-img-main">
+              <img
+                src="./assets/images/products/k75-euro-960.webp"
+                srcset="./assets/images/products/k75-euro-640.webp 640w,
+                        ./assets/images/products/k75-euro-960.webp 960w"
+                sizes="(max-width: 768px) 90vw, 42vw"
+                alt="KALAMPER 6СТ-75 — крупный план"
+                width="960" height="768" loading="lazy">
+            </div>
+            <div class="story-img-accent">
+              <img
+                src="./assets/images/products/k100-euro-640.webp"
+                srcset="./assets/images/products/k100-euro-420.webp 420w,
+                        ./assets/images/products/k100-euro-640.webp 640w"
+                sizes="200px"
+                alt="KALAMPER 6СТ-100"
+                width="640" height="512" loading="lazy">
+              <div class="story-img-label">
+                <strong>6СТ-100</strong>
+                <span>940 А EN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TECHNOLOGIES ═══ -->
+    <section class="section tech-section" id="technologies">
+      <div class="container">
+        <div class="section-header centered" data-reveal>
+          <span class="eyebrow">Преимущества</span>
+          <h2 class="section-title">Восемь причин<br>выбрать KALAMPER</h2>
+        </div>
+
+        <div class="tech-grid">
+          <div class="tech-card" data-reveal data-reveal-delay="0">
+            <div class="tech-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4L36 12V20C36 28.837 28.996 36.406 20 38C11.004 36.406 4 28.837 4 20V12L20 4Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M20 10L30 15V20C30 24.97 25.548 29.46 20 30.5C14.452 29.46 10 24.97 10 20V15L20 10Z" fill="currentColor" opacity="0.15"/>
+                <path d="M16 20L19 23L25 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="tech-card-title">Срок службы 4+ лет</h3>
+            <p class="tech-card-desc">При соблюдении правил эксплуатации. Термоконтроль при производстве сохраняет структуру пластин на весь срок.</p>
+          </div>
+
+          <div class="tech-card" data-reveal data-reveal-delay="60">
+            <div class="tech-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="15" stroke="currentColor" stroke-width="2"/>
+                <path d="M20 8V20L28 26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="20" cy="20" r="2" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3 class="tech-card-title">Быстрый приём заряда</h3>
+            <p class="tech-card-desc">Высокая токопроводимость и оптимальный состав электролита обеспечивают быстрое восстановление заряда от генератора.</p>
+          </div>
+
+          <div class="tech-card" data-reveal data-reveal-delay="120">
+            <div class="tech-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6L8 12V22C8 29.18 13.26 35.48 20 37C26.74 35.48 32 29.18 32 22V12L20 6Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M15 20L18 23L25 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="tech-card-title">Максимальные пусковые токи</h3>
+            <p class="tech-card-desc">Увеличенное количество пластин и улучшенная конструкция дают пусковой ток до 940 А — уверенный старт в любую погоду.</p>
+          </div>
+
+          <div class="tech-card" data-reveal data-reveal-delay="180">
+            <div class="tech-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4C11.163 4 4 11.163 4 20C4 28.837 11.163 36 20 36C28.837 36 36 28.837 36 20C36 11.163 28.837 4 20 4Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M20 12V20L14 26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M14 12L20 8L26 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="tech-card-title">Экстремальные условия</h3>
+            <p class="tech-card-desc">Работает при −40°C и +60°C. Батарея стабильно функционирует в суровом российском климате без потери ёмкости.</p>
+          </div>
+
+          <div class="tech-card" data-reveal data-reveal-delay="0">
+            <div class="tech-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="8" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 16H32M8 24H32M16 8V32M24 8V32" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+                <rect x="14" y="14" width="12" height="12" rx="2" fill="currentColor" opacity="0.2"/>
+              </svg>
+            </div>
+            <h3 class="tech-card-title">Снижен саморазряд</h3>
+            <p class="tech-card-desc">Технология Ca/Ca минимизирует самопроизвольный разряд и устраняет расход воды — обслуживание не требуется.</p>
+          </div>
+
+          <div class="tech-card" data-reveal data-reveal-delay="60">
+            <div class="tech-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 28C12 28 8 24 8 18C8 12.477 13.477 8 20 8C26.523 8 32 12.477 32 18C32 24 28 28 28 28H12Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M15 32H25M17 28V32M23 28V32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="20" cy="18" r="4" fill="currentColor" opacity="0.2"/>
+              </svg>
+            </div>
+            <h3 class="tech-card-title">Много энергопотребителей</h3>
+            <p class="tech-card-desc">Подходит для автомобилей с подогревами, мультимедиа, камерами и другими системами с высокой нагрузкой на бортовую сеть.</p>
+          </div>
+
+          <div class="tech-card" data-reveal data-reveal-delay="120">
+            <div class="tech-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6L34 30H6L20 6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M20 14L28 28H12L20 14Z" fill="currentColor" opacity="0.15"/>
+                <path d="M20 20V26M20 28V30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="tech-card-title">Антикоррозийная защита</h3>
+            <p class="tech-card-desc">Улучшенный состав активной массы и специальное покрытие пластин многократно повышают стойкость к электрохимической коррозии.</p>
+          </div>
+
+          <div class="tech-card" data-reveal data-reveal-delay="180">
+            <div class="tech-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="14" width="28" height="18" rx="3" stroke="currentColor" stroke-width="2"/>
+                <rect x="14" y="10" width="12" height="6" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 23C16 23 17.5 21 20 21C22.5 21 24 23 24 23C24 23 22.5 25 20 25C17.5 25 16 23 16 23Z" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="20" cy="23" r="2" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3 class="tech-card-title">Виброустойчивость</h3>
+            <p class="tech-card-desc">Вибродемпфирующие элементы конструкции защищают пластины от механических повреждений на бездорожье и при вибрации двигателя.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CATALOG ═══ -->
+    <section class="section catalog-section" id="catalog">
+      <div class="container">
+        <div class="section-header" data-reveal>
+          <div>
+            <span class="eyebrow">Линейка</span>
+            <h2 class="section-title">Каталог KALAMPER</h2>
+          </div>
+          <div class="terminal-tabs" role="tablist" aria-label="Тип клеммы">
+            <button class="terminal-tab is-active" role="tab" data-terminal="euro" aria-selected="true">Евро клемма</button>
+            <button class="terminal-tab" role="tab" data-terminal="rus" aria-selected="false">Рос. клемма</button>
+          </div>
+        </div>
+
+        <div class="catalog-grid">
+
+          <!-- 60 Ah -->
+          <article class="product-card" data-reveal data-reveal-delay="0">
+            <div class="product-img-wrap">
+              <img
+                class="product-img product-img--euro"
+                src="./assets/images/products/k60-euro-640.webp"
+                srcset="./assets/images/products/k60-euro-420.webp 420w,
+                        ./assets/images/products/k60-euro-640.webp 640w"
+                sizes="(max-width: 600px) 90vw, 280px"
+                alt="KALAMPER 6СТ-60 евро клемма" width="640" height="512" loading="lazy">
+              <img
+                class="product-img product-img--rus"
+                src="./assets/images/products/k60-rus-640.webp"
+                srcset="./assets/images/products/k60-rus-420.webp 420w,
+                        ./assets/images/products/k60-rus-640.webp 640w"
+                sizes="(max-width: 600px) 90vw, 280px"
+                alt="KALAMPER 6СТ-60 рос. клемма" width="640" height="512" loading="lazy" hidden>
+              <div class="product-glow"></div>
+            </div>
+            <div class="product-info">
+              <div class="product-head">
+                <h3 class="product-name">KALAMPER 6СТ-60</h3>
+                <span class="product-badge">60 Ач</span>
+              </div>
+              <div class="product-specs">
+                <div class="spec"><span class="spec-label">Ёмкость</span><span class="spec-val">60 Ач</span></div>
+                <div class="spec"><span class="spec-label">Пусковой ток EN</span><span class="spec-val">550 А</span></div>
+                <div class="spec"><span class="spec-label">Напряжение</span><span class="spec-val">12 В</span></div>
+                <div class="spec spec--terminal">
+                  <span class="spec-label">Полярность</span>
+                  <span class="spec-val spec-val--euro">Обратная (0)</span>
+                  <span class="spec-val spec-val--rus">Прямая (1)</span>
+                </div>
+                <div class="spec"><span class="spec-label">Гарантия</span><span class="spec-val">24 мес.</span></div>
+                <div class="spec"><span class="spec-label">Производство</span><span class="spec-val">Россия</span></div>
+              </div>
+              <a class="btn btn--card" href="#contact">Узнать цену</a>
+            </div>
+          </article>
+
+          <!-- 65 Ah -->
+          <article class="product-card product-card--featured" data-reveal data-reveal-delay="80">
+            <div class="product-featured-badge">Популярный</div>
+            <div class="product-img-wrap">
+              <img
+                class="product-img product-img--euro"
+                src="./assets/images/products/k65-euro-640.webp"
+                srcset="./assets/images/products/k65-euro-420.webp 420w,
+                        ./assets/images/products/k65-euro-640.webp 640w,
+                        ./assets/images/products/k65-euro-960.webp 960w"
+                sizes="(max-width: 600px) 90vw, 280px"
+                alt="KALAMPER 6СТ-65 евро клемма" width="640" height="512" loading="lazy">
+              <img
+                class="product-img product-img--rus"
+                src="./assets/images/products/k65-rus-640.webp"
+                srcset="./assets/images/products/k65-rus-420.webp 420w,
+                        ./assets/images/products/k65-rus-640.webp 640w,
+                        ./assets/images/products/k65-rus-960.webp 960w"
+                sizes="(max-width: 600px) 90vw, 280px"
+                alt="KALAMPER 6СТ-65 рос. клемма" width="640" height="512" loading="lazy" hidden>
+              <div class="product-glow"></div>
+            </div>
+            <div class="product-info">
+              <div class="product-head">
+                <h3 class="product-name">KALAMPER 6СТ-65</h3>
+                <span class="product-badge">65 Ач</span>
+              </div>
+              <div class="product-specs">
+                <div class="spec"><span class="spec-label">Ёмкость</span><span class="spec-val">65 Ач</span></div>
+                <div class="spec"><span class="spec-label">Пусковой ток EN</span><span class="spec-val">580 А</span></div>
+                <div class="spec"><span class="spec-label">Напряжение</span><span class="spec-val">12 В</span></div>
+                <div class="spec spec--terminal">
+                  <span class="spec-label">Полярность</span>
+                  <span class="spec-val spec-val--euro">Обратная (0)</span>
+                  <span class="spec-val spec-val--rus">Прямая (1)</span>
+                </div>
+                <div class="spec"><span class="spec-label">Гарантия</span><span class="spec-val">24 мес.</span></div>
+                <div class="spec"><span class="spec-label">Производство</span><span class="spec-val">Россия</span></div>
+              </div>
+              <a class="btn btn--card" href="#contact">Узнать цену</a>
+            </div>
+          </article>
+
+          <!-- 75 Ah -->
+          <article class="product-card" data-reveal data-reveal-delay="160">
+            <div class="product-img-wrap">
+              <img
+                class="product-img product-img--euro"
+                src="./assets/images/products/k75-euro-640.webp"
+                srcset="./assets/images/products/k75-euro-420.webp 420w,
+                        ./assets/images/products/k75-euro-640.webp 640w,
+                        ./assets/images/products/k75-euro-960.webp 960w"
+                sizes="(max-width: 600px) 90vw, 280px"
+                alt="KALAMPER 6СТ-75 евро клемма" width="640" height="512" loading="lazy">
+              <img
+                class="product-img product-img--rus"
+                src="./assets/images/products/k75-rus-640.webp"
+                srcset="./assets/images/products/k75-rus-420.webp 420w,
+                        ./assets/images/products/k75-rus-640.webp 640w,
+                        ./assets/images/products/k75-rus-960.webp 960w"
+                sizes="(max-width: 600px) 90vw, 280px"
+                alt="KALAMPER 6СТ-75 рос. клемма" width="640" height="512" loading="lazy" hidden>
+              <div class="product-glow"></div>
+            </div>
+            <div class="product-info">
+              <div class="product-head">
+                <h3 class="product-name">KALAMPER 6СТ-75</h3>
+                <span class="product-badge">75 Ач</span>
+              </div>
+              <div class="product-specs">
+                <div class="spec"><span class="spec-label">Ёмкость</span><span class="spec-val">75 Ач</span></div>
+                <div class="spec"><span class="spec-label">Пусковой ток EN</span><span class="spec-val">740 А</span></div>
+                <div class="spec"><span class="spec-label">Напряжение</span><span class="spec-val">12 В</span></div>
+                <div class="spec spec--terminal">
+                  <span class="spec-label">Полярность</span>
+                  <span class="spec-val spec-val--euro">Обратная (0)</span>
+                  <span class="spec-val spec-val--rus">Прямая (1)</span>
+                </div>
+                <div class="spec"><span class="spec-label">Гарантия</span><span class="spec-val">24 мес.</span></div>
+                <div class="spec"><span class="spec-label">Производство</span><span class="spec-val">Россия</span></div>
+              </div>
+              <a class="btn btn--card" href="#contact">Узнать цену</a>
+            </div>
+          </article>
+
+          <!-- 100 Ah -->
+          <article class="product-card" data-reveal data-reveal-delay="240">
+            <div class="product-img-wrap">
+              <img
+                class="product-img product-img--euro"
+                src="./assets/images/products/k100-euro-640.webp"
+                srcset="./assets/images/products/k100-euro-420.webp 420w,
+                        ./assets/images/products/k100-euro-640.webp 640w,
+                        ./assets/images/products/k100-euro-960.webp 960w"
+                sizes="(max-width: 600px) 90vw, 280px"
+                alt="KALAMPER 6СТ-100 евро клемма" width="640" height="512" loading="lazy">
+              <img
+                class="product-img product-img--rus"
+                src="./assets/images/products/k100-rus-640.webp"
+                srcset="./assets/images/products/k100-rus-420.webp 420w,
+                        ./assets/images/products/k100-rus-640.webp 640w,
+                        ./assets/images/products/k100-rus-960.webp 960w"
+                sizes="(max-width: 600px) 90vw, 280px"
+                alt="KALAMPER 6СТ-100 рос. клемма" width="640" height="512" loading="lazy" hidden>
+              <div class="product-glow"></div>
+            </div>
+            <div class="product-info">
+              <div class="product-head">
+                <h3 class="product-name">KALAMPER 6СТ-100</h3>
+                <span class="product-badge">100 Ач</span>
+              </div>
+              <div class="product-specs">
+                <div class="spec"><span class="spec-label">Ёмкость</span><span class="spec-val">100 Ач</span></div>
+                <div class="spec"><span class="spec-label">Пусковой ток EN</span><span class="spec-val">940 А</span></div>
+                <div class="spec"><span class="spec-label">Напряжение</span><span class="spec-val">12 В</span></div>
+                <div class="spec spec--terminal">
+                  <span class="spec-label">Полярность</span>
+                  <span class="spec-val spec-val--euro">Обратная (0)</span>
+                  <span class="spec-val spec-val--rus">Прямая (1)</span>
+                </div>
+                <div class="spec"><span class="spec-label">Гарантия</span><span class="spec-val">24 мес.</span></div>
+                <div class="spec"><span class="spec-label">Производство</span><span class="spec-val">Россия</span></div>
+              </div>
+              <a class="btn btn--card" href="#contact">Узнать цену</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="cta-section" id="contact">
+      <div class="cta-bg">
+        <div class="cta-grid"></div>
+        <div class="cta-aurora"></div>
+      </div>
+      <div class="container cta-inner" data-reveal>
+        <div class="cta-content">
+          <span class="eyebrow eyebrow--light">Оптовые поставки</span>
+          <h2 class="cta-title">Станьте дилером<br>KALAMPER</h2>
+          <p class="cta-desc">
+            Работаем с дистрибьюторами, торговыми сетями и автомагазинами. Индивидуальные условия, гибкая логистика, маркетинговая поддержка.
+          </p>
+          <div class="cta-contacts">
+            <a class="cta-phone" href="tel:+78002220770">8 (800) 222-07-70</a>
+            <span class="cta-note">Бесплатно по России</span>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn--primary btn--lg" href="tel:+78002220770">Позвонить</a>
+            <a class="btn btn--outline btn--lg btn--light" href="mailto:info@kalamper.ru">Написать письмо</a>
+          </div>
+        </div>
+        <div class="cta-visual">
+          <img
+            src="./assets/images/products/k100-euro-960.webp"
+            srcset="./assets/images/products/k100-euro-640.webp 640w,
+                    ./assets/images/products/k100-euro-960.webp 960w"
+            sizes="(max-width: 768px) 80vw, 40vw"
+            alt="KALAMPER 6СТ-100 — флагманская модель"
+            width="960" height="768" loading="lazy">
+          <div class="cta-visual-glow"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="./assets/brand/kalamper-logo.svg" alt="KALAMPER" width="140" height="24">
+        <p class="footer-tagline">Аккумуляторы нового поколения.<br>Двойной ресурс. Уверенный запуск.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Навигация по сайту">
+        <a href="#about">О бренде</a>
+        <a href="#technologies">Технологии</a>
+        <a href="#catalog">Каталог</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+      <div class="footer-copy">
+        <p>© 2024 KALAMPER. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
