@@ -1,20 +1,24 @@
-<svg viewBox="0 0 248 44" xmlns="http://www.w3.org/2000/svg" fill="none">
-  <!-- ── Battery icon ── -->
-  <!-- terminal nub -->
-  <rect x="14" y="1" width="14" height="7" rx="2" fill="white"/>
-  <!-- body outline -->
-  <rect x="4" y="7" width="34" height="30" rx="4" stroke="white" stroke-width="2" fill="rgba(255,255,255,0.04)"/>
-  <!-- lightning bolt fill -->
-  <path d="M24 12 L15 26 L22 26 L17 38 L29 24 L22 24 Z" fill="white"/>
-  <!-- teal accent dot -->
-  <circle cx="32" cy="12" r="3" fill="#00E5C0"/>
+<svg viewBox="0 0 208 44" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- ── K mark ── -->
+  <!-- vertical bar -->
+  <line x1="10" y1="4"  x2="10" y2="40"
+        stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <!-- upper arm -->
+  <line x1="15" y1="20" x2="37" y2="4"
+        stroke="white" stroke-width="6" stroke-linecap="round"/>
+  <!-- lower arm -->
+  <line x1="15" y1="24" x2="37" y2="40"
+        stroke="white" stroke-width="6" stroke-linecap="round"/>
+  <!-- electric junction -->
+  <circle cx="13.5" cy="22" r="6"   fill="#060B18"/>
+  <circle cx="13.5" cy="22" r="4"   fill="#00E5C0"/>
+  <circle cx="13.5" cy="22" r="1.6" fill="white" opacity="0.85"/>
 
   <!-- ── Wordmark ── -->
-  <text
-    x="50" y="31"
-    font-family="'Arial Black', 'Arial', Helvetica, sans-serif"
+  <text x="52" y="31"
+    font-family="'Arial Black','Arial',Helvetica,sans-serif"
     font-weight="900"
-    font-size="23"
-    fill="white"
-    letter-spacing="4">KALAMPER</text>
+    font-size="22"
+    letter-spacing="4"
+    fill="white">KALAMPER</text>
 </svg>
