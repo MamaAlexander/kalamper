@@ -1,20 +1,15 @@
 <svg viewBox="0 0 208 44" xmlns="http://www.w3.org/2000/svg" fill="none">
-  <!-- ── K mark ── -->
   <!-- vertical bar -->
-  <line x1="10" y1="4"  x2="10" y2="40"
-        stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="10" y1="4"  x2="10" y2="40" stroke="#FFB800" stroke-width="7" stroke-linecap="round"/>
   <!-- upper arm -->
-  <line x1="15" y1="20" x2="37" y2="4"
-        stroke="white" stroke-width="6" stroke-linecap="round"/>
+  <line x1="15" y1="20" x2="37" y2="4" stroke="#FFB800" stroke-width="6" stroke-linecap="round"/>
   <!-- lower arm -->
-  <line x1="15" y1="24" x2="37" y2="40"
-        stroke="white" stroke-width="6" stroke-linecap="round"/>
+  <line x1="15" y1="24" x2="37" y2="40" stroke="#FFB800" stroke-width="6" stroke-linecap="round"/>
   <!-- electric junction -->
-  <circle cx="13.5" cy="22" r="6"   fill="#060B18"/>
-  <circle cx="13.5" cy="22" r="4"   fill="#00E5C0"/>
-  <circle cx="13.5" cy="22" r="1.6" fill="white" opacity="0.85"/>
-
-  <!-- ── Wordmark ── -->
+  <circle cx="13.5" cy="22" r="6"   fill="#0D0D0D"/>
+  <circle cx="13.5" cy="22" r="4"   fill="#FFD600"/>
+  <circle cx="13.5" cy="22" r="1.6" fill="white" opacity="0.9"/>
+  <!-- Wordmark -->
   <text x="52" y="31"
     font-family="'Arial Black','Arial',Helvetica,sans-serif"
     font-weight="900"
