@@ -397,10 +397,6 @@ ul, ol { list-style: none; }
   position: relative;
   display: inline-block;
   animation: hero-float 6s ease-in-out infinite;
-  background: #eef0f3;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06);
 }
 @keyframes hero-float {
   0%, 100% { transform: translateY(0); }
@@ -787,7 +783,7 @@ ul, ol { list-style: none; }
 
 .product-img-wrap {
   position: relative;
-  background: #f5f6f8;
+  background: transparent;
   overflow: hidden;
   aspect-ratio: 4/3;
   display: flex;
