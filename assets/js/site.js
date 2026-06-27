@@ -171,3 +171,140 @@
   }
 
 })();
+
+// ═══ DEALERS ═══
+async function loadCities() {
+  const container = document.getElementById('dealers-cities');
+  if (!container) return;
+  try {
+    const res = await fetch('./api/dealers.php');
+    const data = await res.json();
+    if (!data.ok || !data.cities.length) {
+      container.innerHTML = '<p style="color:var(--text-muted);text-align:center">Информация о дилерах обновляется</p>';
+      return;
+    }
+    container.innerHTML = data.cities.map(city =>
+      `<button class="dealer-city-btn" onclick="openCityModal('${city}')">${city}</button>`
+    ).join('');
+  } catch(e) { console.error(e); }
+}
+
+async function openCityModal(city) {
+  const modal = document.getElementById('city-modal');
+  const title = document.getElementById('city-modal-title');
+  const body = document.getElementById('city-modal-body');
+  title.textContent = `Дилеры в городе: ${city}`;
+  body.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted)">Загрузка...</div>';
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  try {
+    const res = await fetch(`./api/dealers.php?city=${encodeURIComponent(city)}`);
+    const data = await res.json();
+    if (!data.ok || !data.dealers.length) { body.innerHTML = '<p style="color:var(--text-muted)">Дилеры не найдены</p>'; return; }
+    body.innerHTML = data.dealers.map(d => `
+      <div class="dealer-card">
+        <div class="dealer-name">${d.name}</div>
+        <div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" fill="currentColor"/></svg>${d.address}</div>
+        <div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 1v1.5a1 1 0 01-.8.98l-.7.14a10 10 0 004.38 4.38l.14-.7A1 1 0 0111.5 9.5H13a1 1 0 011 1V13a1 1 0 01-1 1h-1C6.37 14 2 9.63 2 4V3z" fill="currentColor"/></svg><a class="dealer-phone-link" href="tel:${d.phone.replace(/\D/g,'')}">${d.phone}</a></div>
+        ${d.hours ? `<div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>${d.hours}</div>` : ''}
+      </div>`).join('');
+  } catch(e) { body.innerHTML = '<p style="color:var(--text-muted)">Ошибка загрузки</p>'; }
+}
+
+function closeCityModal() {
+  document.getElementById('city-modal').hidden = true;
+  document.body.style.overflow = '';
+}
+
+document.getElementById('city-modal-close')?.addEventListener('click', closeCityModal);
+document.getElementById('city-modal-overlay')?.addEventListener('click', closeCityModal);
+loadCities();
+
+// ═══ REVIEWS ═══
+async function loadReviews() {
+  const grid = document.getElementById('reviews-grid');
+  if (!grid) return;
+  try {
+    const res = await fetch('./api/reviews.php');
+    const data = await res.json();
+    if (!data.ok || !data.reviews.length) {
+      grid.innerHTML = '<div class="reviews-loading">Отзывов пока нет. Будьте первым!</div>';
+      return;
+    }
+    grid.innerHTML = data.reviews.map(r => `
+      <div class="review-card">
+        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+        <p class="review-text">${r.review.replace(/</g,'&lt;')}</p>
+        <div class="review-meta">
+          <span class="review-author">${r.name.replace(/</g,'&lt;')}</span>
+          <span class="review-date">${new Date(r.created_at).toLocaleDateString('ru-RU',{day:'2-digit',month:'long',year:'numeric'})}</span>
+        </div>
+      </div>`).join('');
+  } catch(e) { grid.innerHTML = '<div class="reviews-loading">Ошибка загрузки отзывов</div>'; }
+}
+
+function openReviewModal() {
+  document.getElementById('review-modal').hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function closeReviewModal() {
+  document.getElementById('review-modal').hidden = true;
+  document.body.style.overflow = '';
+}
+
+document.getElementById('review-add-btn')?.addEventListener('click', openReviewModal);
+document.getElementById('review-modal-close')?.addEventListener('click', closeReviewModal);
+document.getElementById('review-modal-overlay')?.addEventListener('click', closeReviewModal);
+
+// Star rating
+let selectedRating = 0;
+document.querySelectorAll('.star').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedRating = parseInt(btn.dataset.rating);
+    document.getElementById('review-rating').value = selectedRating;
+    document.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('active', i < selectedRating));
+  });
+  btn.addEventListener('mouseenter', () => {
+    const r = parseInt(btn.dataset.rating);
+    document.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('active', i < r));
+  });
+});
+document.getElementById('rating-stars')?.addEventListener('mouseleave', () => {
+  document.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('active', i < selectedRating));
+});
+
+document.getElementById('review-form')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const status = document.getElementById('review-form-status');
+  const submit = document.getElementById('review-submit');
+  const rating = parseInt(document.getElementById('review-rating').value);
+  if (!rating) { status.textContent = 'Пожалуйста, выберите оценку'; status.className='form-status error'; return; }
+  submit.disabled = true; submit.textContent = 'Отправка...';
+  status.textContent = ''; status.className = 'form-status';
+  try {
+    const res = await fetch('./api/reviews.php', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name: document.getElementById('review-name').value,
+        email: document.getElementById('review-email').value,
+        rating,
+        review: document.getElementById('review-text').value
+      })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      status.textContent = data.message;
+      status.className = 'form-status';
+      document.getElementById('review-form').reset();
+      selectedRating = 0;
+      document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+      setTimeout(() => { closeReviewModal(); loadReviews(); }, 1500);
+    } else {
+      status.textContent = data.error || 'Ошибка'; status.className='form-status error';
+    }
+  } catch(e) { status.textContent = 'Ошибка сети'; status.className='form-status error'; }
+  finally { submit.disabled=false; submit.textContent='Отправить отзыв'; }
+});
+
+loadReviews();

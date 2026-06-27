@@ -1,19 +1,24 @@
-<svg viewBox="0 0 208 44" xmlns="http://www.w3.org/2000/svg" fill="none">
-  <!-- vertical bar -->
-  <line x1="10" y1="4"  x2="10" y2="40" stroke="#FFB800" stroke-width="7" stroke-linecap="round"/>
-  <!-- upper arm -->
-  <line x1="15" y1="20" x2="37" y2="4" stroke="#FFB800" stroke-width="6" stroke-linecap="round"/>
-  <!-- lower arm -->
-  <line x1="15" y1="24" x2="37" y2="40" stroke="#FFB800" stroke-width="6" stroke-linecap="round"/>
-  <!-- electric junction -->
-  <circle cx="13.5" cy="22" r="6"   fill="#0D0D0D"/>
-  <circle cx="13.5" cy="22" r="4"   fill="#FFD600"/>
-  <circle cx="13.5" cy="22" r="1.6" fill="white" opacity="0.9"/>
-  <!-- Wordmark -->
-  <text x="52" y="31"
+<svg viewBox="0 0 240 52" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black plate — like the battery label -->
+  <rect width="240" height="52" rx="7" fill="#111111"/>
+  <!-- Yellow diagonal accent (right side, like label chevron) -->
+  <clipPath id="lcp"><rect width="240" height="52" rx="7"/></clipPath>
+  <g clip-path="url(#lcp)" opacity="0.18">
+    <polygon points="206,0 240,0 240,52 218,52" fill="#FFB800"/>
+    <polygon points="214,0 226,0 226,52 210,52" fill="#FFB800"/>
+  </g>
+  <!-- KALAMPER bold text -->
+  <text x="14" y="35"
     font-family="'Arial Black','Arial',Helvetica,sans-serif"
     font-weight="900"
-    font-size="22"
-    letter-spacing="4"
+    font-size="27"
+    letter-spacing="3.5"
     fill="white">KALAMPER</text>
+  <!-- Subtitle bar -->
+  <text x="15" y="47"
+    font-family="Arial,Helvetica,sans-serif"
+    font-weight="400"
+    font-size="7"
+    letter-spacing="3"
+    fill="#FFB800">СТАРТЕРНЫЕ АККУМУЛЯТОРЫ</text>
 </svg>
