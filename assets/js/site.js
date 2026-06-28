@@ -172,7 +172,30 @@
 
 })();
 
-// ═══ DEALERS ═══
+// ═══ DEALERS + MAP ═══
+let dealersMap = null;
+let dealersMarkers = [];
+
+const PIN_ICON = () => L.divIcon({
+  className: '',
+  html: `<svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 0C6.27 0 0 6.27 0 14C0 24.5 14 36 14 36C14 36 28 24.5 28 14C28 6.27 21.73 0 14 0Z" fill="#FFB800"/>
+    <circle cx="14" cy="14" r="6" fill="#111"/>
+  </svg>`,
+  iconSize: [28, 36],
+  iconAnchor: [14, 36],
+  popupAnchor: [0, -38]
+});
+
+function initMap() {
+  if (dealersMap || !document.getElementById('dealers-map')) return;
+  dealersMap = L.map('dealers-map', { zoomControl: true, scrollWheelZoom: false });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    maxZoom: 18
+  }).addTo(dealersMap);
+}
+
 async function loadCities() {
   const container = document.getElementById('dealers-cities');
   if (!container) return;
@@ -184,40 +207,95 @@ async function loadCities() {
       return;
     }
     container.innerHTML = data.cities.map(city =>
-      `<button class="dealer-city-btn" onclick="openCityModal('${city}')">${city}</button>`
+      `<button class="dealer-city-btn" onclick="selectCity('${city.replace(/'/g,"\\'")}', this)">${city}</button>`
     ).join('');
   } catch(e) { console.error(e); }
 }
 
-async function openCityModal(city) {
-  const modal = document.getElementById('city-modal');
-  const title = document.getElementById('city-modal-title');
-  const body = document.getElementById('city-modal-body');
-  title.textContent = `Дилеры в городе: ${city}`;
-  body.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted)">Загрузка...</div>';
-  modal.hidden = false;
-  document.body.style.overflow = 'hidden';
+async function selectCity(city, btn) {
+  // Mark active button
+  document.querySelectorAll('.dealer-city-btn').forEach(b => b.classList.remove('is-active'));
+  btn.classList.add('is-active');
+
+  // Show map panel
+  const placeholder = document.getElementById('dealers-map-placeholder');
+  const mapEl = document.getElementById('dealers-map');
+  const listPanel = document.getElementById('dealers-list-panel');
+  const listEl = document.getElementById('dealers-list');
+
+  placeholder.style.display = 'none';
+  mapEl.style.display = 'block';
+  listPanel.style.display = 'flex';
+  listEl.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center">Загрузка...</div>';
+
+  // Init map once
+  initMap();
+
   try {
     const res = await fetch(`./api/dealers.php?city=${encodeURIComponent(city)}`);
     const data = await res.json();
-    if (!data.ok || !data.dealers.length) { body.innerHTML = '<p style="color:var(--text-muted)">Дилеры не найдены</p>'; return; }
-    body.innerHTML = data.dealers.map(d => `
-      <div class="dealer-card">
+    if (!data.ok || !data.dealers.length) {
+      listEl.innerHTML = '<div style="padding:20px;color:var(--text-muted)">Дилеры не найдены</div>';
+      return;
+    }
+
+    // Clear old markers
+    dealersMarkers.forEach(m => m.remove());
+    dealersMarkers = [];
+
+    const bounds = [];
+
+    listEl.innerHTML = data.dealers.map((d, i) => `
+      <div class="dealer-card" id="dc-${i}" onclick="focusDealer(${i})">
         <div class="dealer-name">${d.name}</div>
-        <div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" fill="currentColor"/></svg>${d.address}</div>
-        <div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 1v1.5a1 1 0 01-.8.98l-.7.14a10 10 0 004.38 4.38l.14-.7A1 1 0 0111.5 9.5H13a1 1 0 011 1V13a1 1 0 01-1 1h-1C6.37 14 2 9.63 2 4V3z" fill="currentColor"/></svg><a class="dealer-phone-link" href="tel:${d.phone.replace(/\D/g,'')}">${d.phone}</a></div>
+        <div class="dealer-detail">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" fill="currentColor"/></svg>
+          ${d.address}
+        </div>
+        <div class="dealer-detail">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 1v1.5a1 1 0 01-.8.98l-.7.14a10 10 0 004.38 4.38l.14-.7A1 1 0 0111.5 9.5H13a1 1 0 011 1V13a1 1 0 01-1 1h-1C6.37 14 2 9.63 2 4V3z" fill="currentColor"/></svg>
+          <a class="dealer-phone-link" href="tel:${d.phone.replace(/\D/g,'')}">${d.phone}</a>
+        </div>
         ${d.hours ? `<div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>${d.hours}</div>` : ''}
       </div>`).join('');
-  } catch(e) { body.innerHTML = '<p style="color:var(--text-muted)">Ошибка загрузки</p>'; }
+
+    // Add markers
+    data.dealers.forEach((d, i) => {
+      if (!d.lat || !d.lng) return;
+      const popup = L.popup({ className: 'dealer-popup' }).setContent(
+        `<b style="color:#FFB800">${d.name}</b><br>${d.address}<br><a href="tel:${d.phone.replace(/\D/g,'')}" style="color:#FFB800">${d.phone}</a>`
+      );
+      const marker = L.marker([d.lat, d.lng], { icon: PIN_ICON() })
+        .addTo(dealersMap)
+        .bindPopup(popup)
+        .on('click', () => {
+          document.querySelectorAll('.dealer-card').forEach(c => c.classList.remove('is-active'));
+          document.getElementById(`dc-${i}`)?.classList.add('is-active');
+          document.getElementById(`dc-${i}`)?.scrollIntoView({ block: 'nearest' });
+        });
+      dealersMarkers.push(marker);
+      bounds.push([d.lat, d.lng]);
+    });
+
+    // Fit map to markers
+    setTimeout(() => {
+      dealersMap.invalidateSize();
+      if (bounds.length > 1) dealersMap.fitBounds(bounds, { padding: [40, 40] });
+      else if (bounds.length === 1) dealersMap.setView(bounds[0], 13);
+    }, 100);
+
+  } catch(e) { listEl.innerHTML = '<div style="padding:20px;color:var(--text-muted)">Ошибка загрузки</div>'; }
 }
 
-function closeCityModal() {
-  document.getElementById('city-modal').hidden = true;
-  document.body.style.overflow = '';
+function focusDealer(i) {
+  document.querySelectorAll('.dealer-card').forEach(c => c.classList.remove('is-active'));
+  document.getElementById(`dc-${i}`)?.classList.add('is-active');
+  if (dealersMarkers[i]) {
+    dealersMap.setView(dealersMarkers[i].getLatLng(), 15, { animate: true });
+    dealersMarkers[i].openPopup();
+  }
 }
 
-document.getElementById('city-modal-close')?.addEventListener('click', closeCityModal);
-document.getElementById('city-modal-overlay')?.addEventListener('click', closeCityModal);
 loadCities();
 
 // ═══ REVIEWS ═══
