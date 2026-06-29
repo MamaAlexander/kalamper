@@ -1,13 +1,5 @@
-<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <rect width="32" height="32" rx="7" fill="#111111"/>
-  <!-- K letter -->
-  <line x1="6" y1="7" x2="6" y2="25" stroke="white" stroke-width="3" stroke-linecap="round"/>
-  <line x1="8" y1="15.5" x2="15" y2="8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="8" y1="16.5" x2="15" y2="24" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- R letter -->
-  <line x1="19" y1="7" x2="19" y2="25" stroke="white" stroke-width="3" stroke-linecap="round"/>
-  <path d="M19 7 Q27 7 27 12 Q27 17 19 17" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <line x1="21" y1="17" x2="27" y2="25" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- Yellow dot accent -->
-  <circle cx="16" cy="27" r="1.5" fill="#FFB800"/>
+<svg width="675" height="675" viewBox="0 0 675 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="675" height="675" rx="337.5" fill="black"/>
+<path d="M419.366 182C419.366 182 409.801 182 471.083 182C532.365 182 575.102 234.38 577.521 270.643C579.94 306.906 561.394 335.917 513.013 357.675L613 491.445H527.527L433.991 366.539H292.784L249.67 330.41L279.919 305.295C279.919 305.295 420.283 305.295 454.956 305.295C489.629 305.295 498.499 290.789 498.499 272.255C498.499 253.72 486.404 242.439 456.569 242.439C426.734 242.439 350.501 242.439 350.501 242.439L419.366 182Z" fill="#FFB121"/>
+<path d="M62 182H132.689V317.483L289.33 182H384.118L217.034 330.309L388.135 491.445H289.33L165.624 371.996L132.689 403.261V491.445H62V182Z" fill="white"/>
 </svg>
