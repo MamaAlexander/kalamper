@@ -1,14 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Виброустойчивость — KALAMPER</title>
   <meta name="description" content="Вибродемпфирующая конструкция KALAMPER защищает пластины от механических повреждений на бездорожье и при вибрации двигателя.">
+  <link rel="canonical" href="https://www.kalamper.ru/technologies/vibration.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.kalamper.ru/technologies/vibration.html">
+  <meta property="og:title" content="Виброустойчивость — KALAMPER">
+  <meta property="og:description" content="Вибродемпфирующая конструкция KALAMPER защищает пластины от механических повреждений на бездорожье и при вибрации двигателя.">
+  <meta property="og:image" content="https://www.kalamper.ru/assets/images/products/k65-hero2-640.webp">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="KALAMPER">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://www.kalamper.ru/assets/images/products/k65-hero2-640.webp">
+  <meta name="robots" content="index,follow">
   <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&display=optional" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/site.css">
   <link rel="stylesheet" href="../assets/css/pages.css">
   <script defer src="../assets/js/site.js"></script>
@@ -17,7 +28,7 @@
 <header class="site-header" id="site-header">
   <div class="header-inner">
     <a class="brand-logo" href="../"><img src="../assets/brand/kalamper-logo.svg" alt="KALAMPER" width="180" height="39"></a>
-    <nav class="site-nav" id="site-nav">
+    <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
       <a class="nav-link" href="../#about">О бренде</a>
       <a class="nav-link is-active" href="../#technologies">Технологии</a>
       <a class="nav-link" href="../#catalog">Каталог</a>
@@ -27,6 +38,7 @@
     <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav" aria-label="Открыть меню"><span></span><span></span><span></span></button>
   </div>
 </header>
+<div class="nav-overlay" id="nav-overlay"></div>
 <main>
   <div class="tech-hero">
     <div class="tech-hero-bg"></div>
@@ -104,7 +116,8 @@
     <div class="footer-nav-col"><h4 class="footer-nav-title">Технологии</h4><nav class="footer-nav-links"><a href="./thermocontrol.html">Термоконтроль</a><a href="./cranking.html">Пусковые токи</a><a href="./extremes.html">Экстремальные условия</a><a href="./self-discharge.html">Саморазряд</a><a href="./anticorrosion.html">Антикоррозия</a><a href="./vibration.html">Виброустойчивость</a></nav></div>
     <div class="footer-nav-col"><h4 class="footer-nav-title">Продукция</h4><nav class="footer-nav-links"><a href="../catalog/k60.html">KALAMPER 6СТ-60</a><a href="../catalog/k65.html">KALAMPER 6СТ-65</a><a href="../catalog/k75.html">KALAMPER 6СТ-75</a><a href="../catalog/k100.html">KALAMPER 6СТ-100</a></nav></div>
   </div></div>
-  <div class="footer-bottom"><div class="container footer-bottom-inner"><p class="footer-copy">© 2024 KALAMPER. Все права защищены.</p><p class="footer-copy footer-copy--muted">Производство: Казахстан, завод «Кайнар» · Гарантия 24 месяца</p></div></div>
+  <div class="footer-bottom"><div class="container footer-bottom-inner"><p class="footer-copy">© <span id="footer-year"></span> KALAMPER. Все права защищены.</p></div></div>
 </footer>
+  <script>document.getElementById('footer-year').textContent=new Date().getFullYear();</script>
 </body>
 </html>

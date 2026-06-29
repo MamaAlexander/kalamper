@@ -5,8 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KALAMPER — Аккумуляторы нового поколения</title>
   <meta name="description" content="KALAMPER — автомобильные аккумуляторы с технологией термоконтроля заряда. Срок службы вдвое дольше обычных батарей. Пусковые токи до 940 А. Производство Казахстан, завод «Кайнар».">
+  <meta name="keywords" content="аккумулятор KALAMPER, купить аккумулятор, аккумулятор Казахстан, аккумулятор 60Ач 65Ач 75Ач 100Ач, Кайнар аккумулятор, аккумулятор для авто">
   <meta name="robots" content="index,follow">
-  <meta name="theme-color" content="#060B18">
+  <meta name="theme-color" content="#FFB800">
+  <link rel="canonical" href="https://www.kalamper.ru/">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.kalamper.ru/">
+  <meta property="og:title" content="KALAMPER — Аккумуляторы нового поколения">
+  <meta property="og:description" content="Автомобильные аккумуляторы с технологией термоконтроля заряда. Срок службы вдвое дольше. Пусковые токи до 940 А. Производство Казахстан.">
+  <meta property="og:image" content="https://www.kalamper.ru/assets/brand/og-image.jpg">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="KALAMPER">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="KALAMPER — Аккумуляторы нового поколения">
+  <meta name="twitter:description" content="Автомобильные аккумуляторы с технологией термоконтроля заряда. Пусковые токи до 940 А.">
+  <meta name="twitter:image" content="https://www.kalamper.ru/assets/brand/og-image.jpg">
   <link rel="icon" href="./assets/brand/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,6 +54,7 @@
       </button>
     </div>
   </header>
+  <div class="nav-overlay" id="nav-overlay"></div>
 
   <main>
 
@@ -542,8 +558,13 @@
           <h2 class="section-title">Где купить KALAMPER</h2>
           <p class="section-desc">Выберите свой город — увидите дилеров и их расположение на карте</p>
         </div>
-        <div class="dealers-cities" id="dealers-cities" data-reveal>
-          <!-- Cities populated by JS -->
+        <div class="dealers-cities" data-reveal>
+          <div class="city-select-wrap">
+            <select id="dealers-city-select" class="city-select">
+              <option value="">— Выберите город —</option>
+            </select>
+            <span class="city-select-arrow"></span>
+          </div>
         </div>
         <!-- Map + dealers list panel -->
         <div class="dealers-map-wrap" id="dealers-map-wrap" data-reveal>
@@ -562,22 +583,6 @@
         </div>
       </div>
     </section>
-
-    <!-- City dealers modal -->
-    <div class="city-modal" id="city-modal" role="dialog" aria-modal="true" aria-labelledby="city-modal-title" hidden>
-      <div class="city-modal-overlay" id="city-modal-overlay"></div>
-      <div class="city-modal-panel">
-        <div class="city-modal-head">
-          <h3 id="city-modal-title">Дилеры в городе</h3>
-          <button class="city-modal-close" id="city-modal-close" aria-label="Закрыть">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-        <div class="city-modal-body" id="city-modal-body">
-          <!-- Dealers list populated by JS -->
-        </div>
-      </div>
-    </div>
 
     <!-- ═══ REVIEWS ═══ -->
     <section class="section reviews-section" id="reviews">
@@ -711,11 +716,38 @@
     </div>
     <div class="footer-bottom">
       <div class="container footer-bottom-inner">
-        <p class="footer-copy">© 2024 KALAMPER. Все права защищены.</p>
-        <p class="footer-copy footer-copy--muted">Производство: Казахстан, завод «Кайнар» · Гарантия 24 месяца</p>
+        <p class="footer-copy">© <span id="footer-year"></span> KALAMPER. Все права защищены.</p>
       </div>
     </div>
   </footer>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "KALAMPER",
+    "url": "https://www.kalamper.ru",
+    "logo": "https://www.kalamper.ru/assets/brand/kalamper-logo.svg",
+    "description": "Автомобильные аккумуляторы с технологией термоконтроля заряда. Производство Казахстан, завод «Кайнар».",
+    "telephone": "+78002220770",
+    "email": "info@kalamper.ru",
+    "areaServed": ["RU", "KZ"],
+    "sameAs": []
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Каталог аккумуляторов KALAMPER",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"KALAMPER 6СТ-60","url":"https://www.kalamper.ru/catalog/k60.html"},
+      {"@type":"ListItem","position":2,"name":"KALAMPER 6СТ-65","url":"https://www.kalamper.ru/catalog/k65.html"},
+      {"@type":"ListItem","position":3,"name":"KALAMPER 6СТ-75","url":"https://www.kalamper.ru/catalog/k75.html"},
+      {"@type":"ListItem","position":4,"name":"KALAMPER 6СТ-100","url":"https://www.kalamper.ru/catalog/k100.html"}
+    ]
+  }
+  </script>
+  <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

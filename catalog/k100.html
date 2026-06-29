@@ -1,14 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KALAMPER 6СТ-100 — Флагман 100 Ач, 940 А</title>
   <meta name="description" content="KALAMPER 6СТ-100 — флагманский аккумулятор 100 Ач, пусковой ток 940 А EN. Для внедорожников, грузовых и авто с мощными двигателями. Завод «Кайнар».">
+  <link rel="canonical" href="https://www.kalamper.ru/catalog/k100.html">
+  <meta property="og:type" content="product">
+  <meta property="og:url" content="https://www.kalamper.ru/catalog/k100.html">
+  <meta property="og:title" content="KALAMPER 6СТ-100 — Флагман 100 Ач, 940 А">
+  <meta property="og:description" content="KALAMPER 6СТ-100 — флагманский аккумулятор 100 Ач, пусковой ток 940 А EN. Для внедорожников, грузовых и авто с мощными двигателями. Завод «Кайнар».">
+  <meta property="og:image" content="https://www.kalamper.ru/assets/images/products/k100-euro-640.webp">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="KALAMPER">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://www.kalamper.ru/assets/images/products/k100-euro-640.webp">
+  <meta name="robots" content="index,follow">
   <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&display=optional" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/site.css">
   <link rel="stylesheet" href="../assets/css/pages.css">
   <script defer src="../assets/js/site.js"></script>
@@ -32,6 +43,7 @@
     </button>
   </div>
 </header>
+<div class="nav-overlay" id="nav-overlay"></div>
 
 <main>
 
@@ -275,8 +287,7 @@
   </div>
   <div class="footer-bottom">
     <div class="container footer-bottom-inner">
-      <p class="footer-copy">© 2024 KALAMPER. Все права защищены.</p>
-      <p class="footer-copy footer-copy--muted">Производство: Казахстан, завод «Кайнар» · Гарантия 24 месяца</p>
+      <p class="footer-copy">© <span id="footer-year"></span> KALAMPER. Все права защищены.</p>
     </div>
   </div>
 </footer>
@@ -298,5 +309,6 @@ function switchTerminal(type, btn) {
   }
 }
 </script>
+  <script>document.getElementById('footer-year').textContent=new Date().getFullYear();</script>
 </body>
 </html>

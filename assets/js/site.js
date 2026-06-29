@@ -18,34 +18,29 @@
   /* ── Mobile menu ── */
   const menuBtn = document.getElementById('menu-btn');
   const siteNav = document.getElementById('site-nav');
+  const navOverlay = document.getElementById('nav-overlay');
+
+  function closeNav() {
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.classList.remove('is-open');
+    siteNav.classList.remove('is-open');
+    navOverlay && navOverlay.classList.remove('is-visible');
+    document.body.style.overflow = '';
+  }
+
   if (menuBtn && siteNav) {
     menuBtn.addEventListener('click', () => {
       const open = menuBtn.getAttribute('aria-expanded') === 'true';
       menuBtn.setAttribute('aria-expanded', String(!open));
       menuBtn.classList.toggle('is-open', !open);
       siteNav.classList.toggle('is-open', !open);
+      navOverlay && navOverlay.classList.toggle('is-visible', !open);
       document.body.style.overflow = open ? '' : 'hidden';
     });
-
-    // Close on nav link click
     siteNav.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.classList.remove('is-open');
-        siteNav.classList.remove('is-open');
-        document.body.style.overflow = '';
-      });
+      link.addEventListener('click', closeNav);
     });
-
-    // Close on outside click
-    document.addEventListener('click', e => {
-      if (!header.contains(e.target) && siteNav.classList.contains('is-open')) {
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.classList.remove('is-open');
-        siteNav.classList.remove('is-open');
-        document.body.style.overflow = '';
-      }
-    });
+    navOverlay && navOverlay.addEventListener('click', closeNav);
   }
 
   /* ── Smooth scroll for anchor links ── */
@@ -258,28 +253,30 @@ function initMap() {
 }
 
 async function loadCities() {
-  const container = document.getElementById('dealers-cities');
-  if (!container) return;
+  const sel = document.getElementById('dealers-city-select');
+  if (!sel) return;
+  let cities;
   try {
     const res = await fetch('./api/dealers.php');
     if (!res.ok) throw new Error('no php');
     const data = await res.json();
     if (!data.ok || !data.cities.length) throw new Error('empty');
-    container.innerHTML = data.cities.map(city =>
-      `<button class="dealer-city-btn" onclick="selectCity('${city.replace(/'/g,"\\'")}', this)">${city}</button>`
-    ).join('');
+    cities = data.cities;
   } catch(e) {
-    // PHP not available (e.g. Vercel) — use static fallback data
-    container.innerHTML = DEALERS_FALLBACK.cities.map(city =>
-      `<button class="dealer-city-btn" onclick="selectCity('${city.replace(/'/g,"\\'")}', this)">${city}</button>`
-    ).join('');
+    cities = DEALERS_FALLBACK.cities;
   }
+  cities.forEach(city => {
+    const opt = document.createElement('option');
+    opt.value = city;
+    opt.textContent = city;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', () => {
+    if (sel.value) selectCity(sel.value);
+  });
 }
 
-async function selectCity(city, btn) {
-  // Mark active button
-  document.querySelectorAll('.dealer-city-btn').forEach(b => b.classList.remove('is-active'));
-  btn.classList.add('is-active');
+async function selectCity(city) {
 
   // Show map panel
   const placeholder = document.getElementById('dealers-map-placeholder');
@@ -373,6 +370,10 @@ function focusDealer(i) {
 }
 
 loadCities();
+
+// ═══ FOOTER YEAR ═══
+const fyEl = document.getElementById('footer-year');
+if (fyEl) fyEl.textContent = new Date().getFullYear();
 
 // ═══ REVIEWS ═══
 async function loadReviews() {

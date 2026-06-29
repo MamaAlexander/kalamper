@@ -35,6 +35,7 @@
 
   --container: 1200px;
   --gap: clamp(16px, 3vw, 32px);
+  --header-h: 70px;
 }
 
 /* в”Ђв”Ђ Reset в”Ђв”Ђ */
@@ -255,22 +256,28 @@ ul, ol { list-style: none; }
   .site-nav {
     position: fixed;
     inset: 70px 0 0 0;
-    background: rgba(13,13,13,0.97);
-    backdrop-filter: blur(20px);
+    background: #0D0D0D;
     flex-direction: column;
     align-items: stretch;
     padding: 24px clamp(20px, 5vw, 40px);
     gap: 4px;
     transform: translateX(100%);
     transition: transform var(--transition-slow);
-    z-index: 99;
+    z-index: 999;
+    overflow-y: auto;
+    border-top: 1px solid rgba(255,184,0,0.1);
   }
   .site-nav.is-open { transform: translateX(0); }
-  .nav-link {
-    font-size: 18px;
-    padding: 14px 16px;
-  }
+  .nav-link { font-size: 18px; padding: 14px 16px; }
   .nav-link--cta { margin-top: 8px; text-align: center; }
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 998;
+  }
+  .nav-overlay.is-visible { display: block; }
 }
 
 /* в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
@@ -1101,14 +1108,44 @@ body[data-terminal="rus"] .product-img--rus { display: block !important; }
 
 /* ═══ DEALERS SECTION ═══ */
 .section-desc { color: var(--text-muted); text-align: center; max-width: 560px; margin: 12px auto 0; }
-.dealers-cities { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 48px; }
-.dealer-city-btn {
-  background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);
-  border-radius: 100px; padding: 10px 22px; font-size: .875rem;
-  cursor: pointer; transition: all .2s; font-family: inherit; font-weight: 500;
+.dealers-cities { display: flex; justify-content: center; margin-top: 40px; }
+
+/* Styled city select dropdown */
+.city-select-wrap {
+  position: relative;
+  display: inline-block;
 }
-.dealer-city-btn:hover,
-.dealer-city-btn.is-active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.city-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border-mid);
+  color: var(--text);
+  padding: 14px 52px 14px 24px;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: .9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  min-width: 280px;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.city-select:focus,
+.city-select:hover { border-color: var(--accent); background: rgba(255,184,0,.05); }
+.city-select option { background: #1A1A1A; color: var(--text); }
+.city-select-arrow {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+}
 
 /* Map + list panel */
 .dealers-map-wrap {
