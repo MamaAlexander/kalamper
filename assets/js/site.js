@@ -176,6 +176,44 @@
 let dealersMap = null;
 let dealersMarkers = [];
 
+// Static fallback data (used when PHP API is unavailable, e.g. on Vercel)
+const DEALERS_FALLBACK = {
+  cities: ['Алматы','Астана','Шымкент','Атырау','Москва','Санкт-Петербург','Краснодар','Екатеринбург','Новосибирск'],
+  byCity: {
+    'Алматы': [
+      {name:'АКБ-Центр Алматы',address:'пр. Достык, 5/1',phone:'+7 (727) 300-10-01',hours:'Ежедневно 09:00-20:00',lat:43.2565,lng:76.9286},
+      {name:'АвтоАккумуляторы',address:'ул. Розыбакиева, 247а',phone:'+7 (727) 300-20-02',hours:'Пн-Сб 09:00-19:00',lat:43.2310,lng:76.8870}
+    ],
+    'Астана': [
+      {name:'АКБ Плюс',address:'пр. Туран, 21',phone:'+7 (7172) 28-10-01',hours:'Ежедневно 09:00-20:00',lat:51.1280,lng:71.4305},
+      {name:'АвтоЭнерго',address:'ул. Кенесары, 40',phone:'+7 (7172) 50-20-05',hours:'Пн-Пт 09:00-18:00',lat:51.1801,lng:71.4460}
+    ],
+    'Шымкент': [
+      {name:'АКБ-Маркет',address:'пр. Республики, 33',phone:'+7 (7252) 53-10-01',hours:'Ежедневно 08:00-19:00',lat:42.3417,lng:69.5901}
+    ],
+    'Атырау': [
+      {name:'АвтоБатарея',address:'ул. Азаттык, 55',phone:'+7 (7122) 35-10-02',hours:'Пн-Сб 09:00-18:00',lat:47.1167,lng:51.8833}
+    ],
+    'Москва': [
+      {name:'АвтоМаг на Варшавке',address:'Варшавское ш., 87',phone:'8 (800) 222-07-70',hours:'Ежедневно 08:00-22:00',lat:55.6602,lng:37.6247},
+      {name:'АКБ Сервис МКАД',address:'МКАД 39-й км, 1с2',phone:'8 (495) 777-44-55',hours:'Пн-Вс 09:00-21:00',lat:55.6171,lng:37.4640}
+    ],
+    'Санкт-Петербург': [
+      {name:'Северная АКБ',address:'Московский пр., 100',phone:'8 (812) 600-77-01',hours:'Пн-Сб 09:00-20:00',lat:59.8764,lng:30.3242},
+      {name:'АккумуляторСПб',address:'пр. Энгельса, 150',phone:'8 (812) 600-77-02',hours:'Ежедневно 09:00-21:00',lat:60.0264,lng:30.3417}
+    ],
+    'Краснодар': [
+      {name:'АвтоАккум Юг',address:'ул. Ставропольская, 78',phone:'8 (861) 201-92-01',hours:'Пн-Пт 09:00-19:00',lat:45.0355,lng:38.9753}
+    ],
+    'Екатеринбург': [
+      {name:'УралАКБ',address:'ул. Малышева, 51',phone:'8 (343) 300-10-01',hours:'Пн-Сб 09:00-20:00',lat:56.8379,lng:60.5975}
+    ],
+    'Новосибирск': [
+      {name:'СибАКБ',address:'Красный пр., 220',phone:'8 (383) 200-10-01',hours:'Ежедневно 09:00-19:00',lat:55.0302,lng:82.9265}
+    ]
+  }
+};
+
 const PIN_ICON = () => L.divIcon({
   className: '',
   html: `<svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -201,15 +239,18 @@ async function loadCities() {
   if (!container) return;
   try {
     const res = await fetch('./api/dealers.php');
+    if (!res.ok) throw new Error('no php');
     const data = await res.json();
-    if (!data.ok || !data.cities.length) {
-      container.innerHTML = '<p style="color:var(--text-muted);text-align:center">Информация о дилерах обновляется</p>';
-      return;
-    }
+    if (!data.ok || !data.cities.length) throw new Error('empty');
     container.innerHTML = data.cities.map(city =>
       `<button class="dealer-city-btn" onclick="selectCity('${city.replace(/'/g,"\\'")}', this)">${city}</button>`
     ).join('');
-  } catch(e) { console.error(e); }
+  } catch(e) {
+    // PHP not available (e.g. Vercel) — use static fallback data
+    container.innerHTML = DEALERS_FALLBACK.cities.map(city =>
+      `<button class="dealer-city-btn" onclick="selectCity('${city.replace(/'/g,"\\'")}', this)">${city}</button>`
+    ).join('');
+  }
 }
 
 async function selectCity(city, btn) {
@@ -231,60 +272,67 @@ async function selectCity(city, btn) {
   // Init map once
   initMap();
 
+  // Try live API, fall back to static data (Vercel has no PHP)
+  let dealers;
   try {
     const res = await fetch(`./api/dealers.php?city=${encodeURIComponent(city)}`);
+    if (!res.ok) throw new Error('no php');
     const data = await res.json();
-    if (!data.ok || !data.dealers.length) {
-      listEl.innerHTML = '<div style="padding:20px;color:var(--text-muted)">Дилеры не найдены</div>';
-      return;
-    }
+    if (!data.ok || !data.dealers.length) throw new Error('empty');
+    dealers = data.dealers;
+  } catch(e) {
+    dealers = DEALERS_FALLBACK.byCity[city] || [];
+  }
 
-    // Clear old markers
-    dealersMarkers.forEach(m => m.remove());
-    dealersMarkers = [];
+  if (!dealers.length) {
+    listEl.innerHTML = '<div style="padding:20px;color:var(--text-muted)">Дилеры не найдены</div>';
+    return;
+  }
 
-    const bounds = [];
+  // Clear old markers
+  dealersMarkers.forEach(m => m.remove());
+  dealersMarkers = [];
 
-    listEl.innerHTML = data.dealers.map((d, i) => `
-      <div class="dealer-card" id="dc-${i}" onclick="focusDealer(${i})">
-        <div class="dealer-name">${d.name}</div>
-        <div class="dealer-detail">
-          <svg viewBox="0 0 16 16" fill="none"><path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" fill="currentColor"/></svg>
-          ${d.address}
-        </div>
-        <div class="dealer-detail">
-          <svg viewBox="0 0 16 16" fill="none"><path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 1v1.5a1 1 0 01-.8.98l-.7.14a10 10 0 004.38 4.38l.14-.7A1 1 0 0111.5 9.5H13a1 1 0 011 1V13a1 1 0 01-1 1h-1C6.37 14 2 9.63 2 4V3z" fill="currentColor"/></svg>
-          <a class="dealer-phone-link" href="tel:${d.phone.replace(/\D/g,'')}">${d.phone}</a>
-        </div>
-        ${d.hours ? `<div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>${d.hours}</div>` : ''}
-      </div>`).join('');
+  const bounds = [];
 
-    // Add markers
-    data.dealers.forEach((d, i) => {
-      if (!d.lat || !d.lng) return;
-      const popup = L.popup({ className: 'dealer-popup' }).setContent(
-        `<b style="color:#FFB800">${d.name}</b><br>${d.address}<br><a href="tel:${d.phone.replace(/\D/g,'')}" style="color:#FFB800">${d.phone}</a>`
-      );
-      const marker = L.marker([d.lat, d.lng], { icon: PIN_ICON() })
-        .addTo(dealersMap)
-        .bindPopup(popup)
-        .on('click', () => {
-          document.querySelectorAll('.dealer-card').forEach(c => c.classList.remove('is-active'));
-          document.getElementById(`dc-${i}`)?.classList.add('is-active');
-          document.getElementById(`dc-${i}`)?.scrollIntoView({ block: 'nearest' });
-        });
-      dealersMarkers.push(marker);
-      bounds.push([d.lat, d.lng]);
-    });
+  listEl.innerHTML = dealers.map((d, i) => `
+    <div class="dealer-card" id="dc-${i}" onclick="focusDealer(${i})">
+      <div class="dealer-name">${d.name}</div>
+      <div class="dealer-detail">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" fill="currentColor"/></svg>
+        ${d.address}
+      </div>
+      <div class="dealer-detail">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 1v1.5a1 1 0 01-.8.98l-.7.14a10 10 0 004.38 4.38l.14-.7A1 1 0 0111.5 9.5H13a1 1 0 011 1V13a1 1 0 01-1 1h-1C6.37 14 2 9.63 2 4V3z" fill="currentColor"/></svg>
+        <a class="dealer-phone-link" href="tel:${d.phone.replace(/\D/g,'')}">${d.phone}</a>
+      </div>
+      ${d.hours ? `<div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>${d.hours}</div>` : ''}
+    </div>`).join('');
 
-    // Fit map to markers
-    setTimeout(() => {
-      dealersMap.invalidateSize();
-      if (bounds.length > 1) dealersMap.fitBounds(bounds, { padding: [40, 40] });
-      else if (bounds.length === 1) dealersMap.setView(bounds[0], 13);
-    }, 100);
+  // Add markers
+  dealers.forEach((d, i) => {
+    if (!d.lat || !d.lng) return;
+    const popup = L.popup({ className: 'dealer-popup' }).setContent(
+      `<b style="color:#FFB800">${d.name}</b><br>${d.address}<br><a href="tel:${d.phone.replace(/\D/g,'')}" style="color:#FFB800">${d.phone}</a>`
+    );
+    const marker = L.marker([d.lat, d.lng], { icon: PIN_ICON() })
+      .addTo(dealersMap)
+      .bindPopup(popup)
+      .on('click', () => {
+        document.querySelectorAll('.dealer-card').forEach(c => c.classList.remove('is-active'));
+        document.getElementById(`dc-${i}`)?.classList.add('is-active');
+        document.getElementById(`dc-${i}`)?.scrollIntoView({ block: 'nearest' });
+      });
+    dealersMarkers.push(marker);
+    bounds.push([d.lat, d.lng]);
+  });
 
-  } catch(e) { listEl.innerHTML = '<div style="padding:20px;color:var(--text-muted)">Ошибка загрузки</div>'; }
+  // Fit map to markers
+  setTimeout(() => {
+    dealersMap.invalidateSize();
+    if (bounds.length > 1) dealersMap.fitBounds(bounds, { padding: [40, 40] });
+    else if (bounds.length === 1) dealersMap.setView(bounds[0], 13);
+  }, 100);
 }
 
 function focusDealer(i) {
