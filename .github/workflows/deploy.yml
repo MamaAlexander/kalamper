@@ -1,0 +1,25 @@
+name: Deploy to Beget
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.BEGET_FTP_SERVER }}
+          username: ${{ secrets.BEGET_FTP_USER }}
+          password: ${{ secrets.BEGET_FTP_PASSWORD }}
+          server-dir: /kalamper.ru/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            api/config.local.php
+            remove_bg.py
