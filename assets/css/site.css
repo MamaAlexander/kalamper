@@ -1134,9 +1134,8 @@ body[data-terminal="rus"] .product-img--rus { display: block !important; }
 .dealers-map-placeholder svg { opacity: .35; }
 .dealers-map-placeholder p { font-size: .9rem; }
 #dealers-map { grid-column: 1; height: 420px; z-index: 1; }
-/* Leaflet dark tiles tint */
-#dealers-map .leaflet-tile { filter: brightness(.7) saturate(.4) hue-rotate(180deg); }
-#dealers-map .leaflet-control-attribution { background: rgba(0,0,0,.6) !important; color: #666 !important; }
+/* Yandex Maps */
+#dealers-map ymaps { border-radius: inherit; }
 .dealers-list-panel {
   grid-column: 2;
   overflow-y: auto;

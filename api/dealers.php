@@ -11,7 +11,7 @@ try {
     $city = trim($_GET['city'] ?? '');
 
     if ($city !== '') {
-        $stmt = $pdo->prepare('SELECT id,city,name,address,phone,hours,website FROM kalamper_dealers WHERE is_active=1 AND city=? ORDER BY sort_order,name');
+        $stmt = $pdo->prepare('SELECT id,city,name,address,phone,hours,website,lat,lng FROM kalamper_dealers WHERE is_active=1 AND city=? ORDER BY sort_order,name');
         $stmt->execute([$city]);
         $dealers = $stmt->fetchAll();
         echo json_encode(['ok'=>true,'dealers'=>$dealers], JSON_UNESCAPED_UNICODE);

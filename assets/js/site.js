@@ -214,24 +214,19 @@ const DEALERS_FALLBACK = {
   }
 };
 
-const PIN_ICON = () => L.divIcon({
-  className: '',
-  html: `<svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M14 0C6.27 0 0 6.27 0 14C0 24.5 14 36 14 36C14 36 28 24.5 28 14C28 6.27 21.73 0 14 0Z" fill="#FFB800"/>
-    <circle cx="14" cy="14" r="6" fill="#111"/>
-  </svg>`,
-  iconSize: [28, 36],
-  iconAnchor: [14, 36],
-  popupAnchor: [0, -38]
-});
-
 function initMap() {
-  if (dealersMap || !document.getElementById('dealers-map')) return;
-  dealersMap = L.map('dealers-map', { zoomControl: true, scrollWheelZoom: false });
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap',
-    maxZoom: 18
-  }).addTo(dealersMap);
+  if (dealersMap || !document.getElementById('dealers-map') || typeof ymaps === 'undefined') return;
+  ymaps.ready(() => {
+    dealersMap = new ymaps.Map('dealers-map', {
+      center: [55, 60],
+      zoom: 4,
+      controls: ['zoomControl'],
+    }, {
+      suppressMapOpenBlock: true,
+      yandexMapAutoSwitch: false,
+    });
+    dealersMap.behaviors.disable('scrollZoom');
+  });
 }
 
 async function loadCities() {
@@ -289,12 +284,6 @@ async function selectCity(city, btn) {
     return;
   }
 
-  // Clear old markers
-  dealersMarkers.forEach(m => m.remove());
-  dealersMarkers = [];
-
-  const bounds = [];
-
   listEl.innerHTML = dealers.map((d, i) => `
     <div class="dealer-card" id="dc-${i}" onclick="focusDealer(${i})">
       <div class="dealer-name">${d.name}</div>
@@ -309,38 +298,51 @@ async function selectCity(city, btn) {
       ${d.hours ? `<div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>${d.hours}</div>` : ''}
     </div>`).join('');
 
-  // Add markers
-  dealers.forEach((d, i) => {
-    if (!d.lat || !d.lng) return;
-    const popup = L.popup({ className: 'dealer-popup' }).setContent(
-      `<b style="color:#FFB800">${d.name}</b><br>${d.address}<br><a href="tel:${d.phone.replace(/\D/g,'')}" style="color:#FFB800">${d.phone}</a>`
-    );
-    const marker = L.marker([d.lat, d.lng], { icon: PIN_ICON() })
-      .addTo(dealersMap)
-      .bindPopup(popup)
-      .on('click', () => {
+  const addMarkers = () => {
+    // Clear old markers
+    dealersMarkers.forEach(m => dealersMap.geoObjects.remove(m));
+    dealersMarkers = [];
+
+    const withCoords = dealers.filter(d => d.lat && d.lng);
+    withCoords.forEach((d, i) => {
+      const pm = new ymaps.Placemark([d.lat, d.lng], {
+        balloonContentBody: `<b>${d.name}</b><br>${d.address}<br><a href="tel:${d.phone.replace(/\D/g,'')}">${d.phone}</a>`,
+        hintContent: d.name,
+      }, {
+        preset: 'islands#yellowDotIcon',
+        balloonPanelMaxMapArea: 0,
+      });
+      pm.events.add('click', () => {
         document.querySelectorAll('.dealer-card').forEach(c => c.classList.remove('is-active'));
         document.getElementById(`dc-${i}`)?.classList.add('is-active');
         document.getElementById(`dc-${i}`)?.scrollIntoView({ block: 'nearest' });
       });
-    dealersMarkers.push(marker);
-    bounds.push([d.lat, d.lng]);
-  });
+      dealersMap.geoObjects.add(pm);
+      dealersMarkers.push(pm);
+    });
 
-  // Fit map to markers
-  setTimeout(() => {
-    dealersMap.invalidateSize();
-    if (bounds.length > 1) dealersMap.fitBounds(bounds, { padding: [40, 40] });
-    else if (bounds.length === 1) dealersMap.setView(bounds[0], 13);
-  }, 100);
+    if (dealersMarkers.length === 1) {
+      dealersMap.setCenter([withCoords[0].lat, withCoords[0].lng], 14, { duration: 400 });
+    } else if (dealersMarkers.length > 1) {
+      dealersMap.setBounds(dealersMap.geoObjects.getBounds(), { checkZoomRange: true, zoomMargin: 60, duration: 400 });
+    }
+  };
+
+  if (dealersMap) {
+    addMarkers();
+  } else {
+    initMap();
+    ymaps.ready(addMarkers);
+  }
 }
 
 function focusDealer(i) {
   document.querySelectorAll('.dealer-card').forEach(c => c.classList.remove('is-active'));
   document.getElementById(`dc-${i}`)?.classList.add('is-active');
-  if (dealersMarkers[i]) {
-    dealersMap.setView(dealersMarkers[i].getLatLng(), 15, { animate: true });
-    dealersMarkers[i].openPopup();
+  if (dealersMarkers[i] && dealersMap) {
+    const coords = dealersMarkers[i].geometry.getCoordinates();
+    dealersMap.setCenter(coords, 15, { duration: 400 });
+    dealersMarkers[i].balloon.open();
   }
 }
 
