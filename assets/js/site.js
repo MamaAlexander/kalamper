@@ -176,6 +176,37 @@
 let dealersMap = null;
 let dealersMarkers = [];
 
+// Lazy-load Yandex Maps — script is NOT in <head>, loaded on demand
+let _ymapsCbs = [];
+let _ymapsReady = false;
+let _ymapsLoading = false;
+
+function onYmapsReady(cb) {
+  if (_ymapsReady) { cb(); return; }
+  _ymapsCbs.push(cb);
+  if (!_ymapsLoading) {
+    _ymapsLoading = true;
+    const s = document.createElement('script');
+    s.src = 'https://api-maps.yandex.ru/2.1/?apikey=651452c9-a3c4-4c89-aa09-a644e03979a6&lang=ru_RU';
+    s.async = true;
+    s.onload = () => ymaps.ready(() => {
+      _ymapsReady = true;
+      _ymapsCbs.forEach(fn => fn());
+      _ymapsCbs = [];
+    });
+    document.head.appendChild(s);
+  }
+}
+
+// Preload when dealers section is 400px away
+const _dealersSec = document.getElementById('dealers');
+if (_dealersSec && 'IntersectionObserver' in window) {
+  const _preloadObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { onYmapsReady(() => {}); _preloadObs.disconnect(); }
+  }, { rootMargin: '400px' });
+  _preloadObs.observe(_dealersSec);
+}
+
 // Static fallback data (used when PHP API is unavailable, e.g. on Vercel)
 const DEALERS_FALLBACK = {
   cities: ['Алматы','Астана','Шымкент','Атырау','Москва','Санкт-Петербург','Краснодар','Екатеринбург','Новосибирск'],
@@ -214,19 +245,16 @@ const DEALERS_FALLBACK = {
   }
 };
 
+function initMapInner() {
+  if (dealersMap || !document.getElementById('dealers-map')) return;
+  dealersMap = new ymaps.Map('dealers-map', {
+    center: [55, 60], zoom: 4, controls: ['zoomControl'],
+  }, { suppressMapOpenBlock: true, yandexMapAutoSwitch: false });
+  dealersMap.behaviors.disable('scrollZoom');
+}
+
 function initMap() {
-  if (dealersMap || !document.getElementById('dealers-map') || typeof ymaps === 'undefined') return;
-  ymaps.ready(() => {
-    dealersMap = new ymaps.Map('dealers-map', {
-      center: [55, 60],
-      zoom: 4,
-      controls: ['zoomControl'],
-    }, {
-      suppressMapOpenBlock: true,
-      yandexMapAutoSwitch: false,
-    });
-    dealersMap.behaviors.disable('scrollZoom');
-  });
+  onYmapsReady(initMapInner);
 }
 
 async function loadCities() {
@@ -328,12 +356,10 @@ async function selectCity(city, btn) {
     }
   };
 
-  if (dealersMap) {
+  onYmapsReady(() => {
+    initMapInner();
     addMarkers();
-  } else {
-    initMap();
-    ymaps.ready(addMarkers);
-  }
+  });
 }
 
 function focusDealer(i) {
