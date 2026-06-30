@@ -128,6 +128,29 @@
     });
   });
 
+  /* ── Clickable cards ── */
+  // Tech cards → technology pages
+  document.querySelectorAll('.tech-card').forEach(card => {
+    const href = card.querySelector('.tech-card-link')?.getAttribute('href');
+    if (!href) return;
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', e => {
+      if (e.target.closest('a, button')) return;
+      window.location.href = href;
+    });
+  });
+
+  // Product cards → catalog pages
+  document.querySelectorAll('.product-card').forEach(card => {
+    const href = card.querySelector('.product-name a')?.getAttribute('href');
+    if (!href) return;
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', e => {
+      if (e.target.closest('a, button')) return;
+      window.location.href = href;
+    });
+  });
+
   /* ── Active nav link on scroll ── */
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
