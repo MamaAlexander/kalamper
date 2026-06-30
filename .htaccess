@@ -2,12 +2,14 @@ Options -Indexes
 
 RewriteEngine On
 
-# HTTPS redirect
+# HTTPS redirect (skip on localhost)
 RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)$ [NC]
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# www redirect
+# www redirect (skip on localhost)
 RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)$ [NC]
 RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # ── Gzip compression ──
