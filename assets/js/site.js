@@ -275,6 +275,11 @@ function initMap() {
   onYmapsReady(initMapInner);
 }
 
+function closeDropdown(dropdown, trigger) {
+  dropdown.classList.remove('is-open');
+  trigger.setAttribute('aria-expanded', 'false');
+}
+
 async function loadCities() {
   const dropdown = document.getElementById('city-dropdown');
   const trigger = document.getElementById('city-dropdown-trigger');
@@ -284,7 +289,10 @@ async function loadCities() {
 
   let cities;
   try {
-    const res = await fetch('./api/dealers.php');
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), 3000);
+    const res = await fetch('./api/dealers.php', { signal: ac.signal });
+    clearTimeout(timer);
     if (!res.ok) throw new Error('no php');
     const data = await res.json();
     if (!data.ok || !data.cities.length) throw new Error('empty');
@@ -297,11 +305,14 @@ async function loadCities() {
     `<div class="city-dropdown-item" role="option" data-city="${city}">${city}</div>`
   ).join('');
 
-  trigger.addEventListener('click', () => {
+  // Toggle open on trigger click
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
     const open = dropdown.classList.toggle('is-open');
     trigger.setAttribute('aria-expanded', String(open));
   });
 
+  // Select city from list
   list.addEventListener('click', e => {
     const item = e.target.closest('.city-dropdown-item');
     if (!item) return;
@@ -310,17 +321,21 @@ async function loadCities() {
     trigger.classList.add('has-value');
     list.querySelectorAll('.city-dropdown-item').forEach(i => i.classList.remove('is-selected'));
     item.classList.add('is-selected');
-    dropdown.classList.remove('is-open');
-    trigger.setAttribute('aria-expanded', 'false');
+    closeDropdown(dropdown, trigger);
     selectCity(city);
   });
 
+  // Close on outside click/tap (bubble phase, compatible with iOS Safari)
   document.addEventListener('click', e => {
     if (!dropdown.contains(e.target)) {
-      dropdown.classList.remove('is-open');
-      trigger.setAttribute('aria-expanded', 'false');
+      closeDropdown(dropdown, trigger);
     }
-  }, true);
+  });
+  document.addEventListener('touchstart', e => {
+    if (!dropdown.contains(e.target)) {
+      closeDropdown(dropdown, trigger);
+    }
+  }, { passive: true });
 }
 
 async function selectCity(city) {
