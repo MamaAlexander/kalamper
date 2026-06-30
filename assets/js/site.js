@@ -18,14 +18,39 @@
   /* ── Mobile menu ── */
   const menuBtn = document.getElementById('menu-btn');
   const siteNav = document.getElementById('site-nav');
-  const navOverlay = document.getElementById('nav-overlay');
+
+  // Create overlay if not in HTML (subpages don't have it)
+  let navOverlay = document.getElementById('nav-overlay');
+  if (!navOverlay && menuBtn) {
+    navOverlay = document.createElement('div');
+    navOverlay.className = 'nav-overlay';
+    navOverlay.id = 'nav-overlay';
+    document.body.appendChild(navOverlay);
+  }
+
+  // iOS-compatible scroll lock
+  let _scrollY = 0;
+  function lockScroll() {
+    _scrollY = window.scrollY;
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + _scrollY + 'px';
+    document.body.style.width = '100%';
+  }
+  function unlockScroll() {
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, _scrollY);
+  }
 
   function closeNav() {
     menuBtn.setAttribute('aria-expanded', 'false');
     menuBtn.classList.remove('is-open');
     siteNav.classList.remove('is-open');
-    navOverlay && navOverlay.classList.remove('is-visible');
-    document.body.style.overflow = '';
+    navOverlay.classList.remove('is-visible');
+    unlockScroll();
   }
 
   if (menuBtn && siteNav) {
@@ -34,13 +59,13 @@
       menuBtn.setAttribute('aria-expanded', String(!open));
       menuBtn.classList.toggle('is-open', !open);
       siteNav.classList.toggle('is-open', !open);
-      navOverlay && navOverlay.classList.toggle('is-visible', !open);
-      document.body.style.overflow = open ? '' : 'hidden';
+      navOverlay.classList.toggle('is-visible', !open);
+      open ? unlockScroll() : lockScroll();
     });
     siteNav.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', closeNav);
     });
-    navOverlay && navOverlay.addEventListener('click', closeNav);
+    navOverlay.addEventListener('click', closeNav);
   }
 
   /* ── Smooth scroll for anchor links ── */
