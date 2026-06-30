@@ -559,11 +559,16 @@
           <p class="section-desc">Выберите свой город — увидите дилеров и их расположение на карте</p>
         </div>
         <div class="dealers-cities" data-reveal>
-          <div class="city-select-wrap">
-            <select id="dealers-city-select" class="city-select">
-              <option value="">— Выберите город —</option>
-            </select>
-            <span class="city-select-arrow"></span>
+          <div class="city-dropdown" id="city-dropdown">
+            <button class="city-dropdown-trigger" id="city-dropdown-trigger"
+                    type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="city-dropdown-label" id="city-dropdown-label">— Выберите город —</span>
+              <svg class="city-dropdown-arrow" viewBox="0 0 12 7" fill="none" aria-hidden="true">
+                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="city-dropdown-list" id="city-dropdown-list" role="listbox" aria-label="Выберите город">
+            </div>
           </div>
         </div>
         <!-- Map + dealers list panel -->

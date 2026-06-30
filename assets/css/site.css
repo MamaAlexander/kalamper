@@ -49,6 +49,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
+[hidden] { display: none !important; }
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 button { cursor: pointer; border: none; background: none; font: inherit; }
@@ -707,6 +708,7 @@ ul, ol { list-style: none; }
   flex: 1;
 }
 .tech-card { display: flex; flex-direction: column; }
+.tech-card { position: relative; }
 .tech-card-link {
   display: inline-block;
   margin-top: 14px;
@@ -717,6 +719,13 @@ ul, ol { list-style: none; }
   transition: opacity .2s;
 }
 .tech-card-link:hover { opacity: .7; }
+.tech-card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  z-index: 1;
+}
 
 @media (max-width: 1000px) {
   .tech-grid { grid-template-columns: repeat(2, 1fr); }
@@ -765,6 +774,7 @@ ul, ol { list-style: none; }
   gap: 20px;
 }
 
+.product-card { position: relative; }
 .product-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -847,6 +857,14 @@ ul, ol { list-style: none; }
   color: var(--text);
   line-height: 1.3;
 }
+.product-name a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  z-index: 1;
+}
+.product-card .btn--card { position: relative; z-index: 2; }
 .product-badge {
   font-size: 11px;
   font-weight: 700;
@@ -1110,42 +1128,71 @@ body[data-terminal="rus"] .product-img--rus { display: block !important; }
 .section-desc { color: var(--text-muted); text-align: center; max-width: 560px; margin: 12px auto 0; }
 .dealers-cities { display: flex; justify-content: center; margin-top: 40px; }
 
-/* Styled city select dropdown */
-.city-select-wrap {
-  position: relative;
-  display: inline-block;
-}
-.city-select {
-  appearance: none;
-  -webkit-appearance: none;
+/* Custom city dropdown */
+.city-dropdown { position: relative; display: inline-block; }
+.city-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
   background: var(--bg-card);
   border: 1px solid var(--border-mid);
-  color: var(--text);
-  padding: 14px 52px 14px 24px;
   border-radius: 100px;
-  font-family: inherit;
+  cursor: pointer;
   font-size: .9375rem;
   font-weight: 500;
-  cursor: pointer;
+  color: var(--text-muted);
+  font-family: inherit;
   min-width: 280px;
-  outline: none;
-  transition: border-color .2s, background .2s;
+  transition: border-color .2s, background .2s, color .2s, border-radius .15s;
+  user-select: none;
 }
-.city-select:focus,
-.city-select:hover { border-color: var(--accent); background: rgba(255,184,0,.05); }
-.city-select option { background: #1A1A1A; color: var(--text); }
-.city-select-arrow {
+.city-dropdown-trigger:hover,
+.city-dropdown.is-open .city-dropdown-trigger {
+  border-color: var(--accent);
+  background: rgba(255,184,0,.05);
+}
+.city-dropdown.is-open .city-dropdown-trigger {
+  border-radius: 22px 22px 0 0;
+  color: var(--text);
+}
+.city-dropdown-trigger.has-value { color: var(--text); }
+.city-dropdown-label { flex: 1; text-align: left; }
+.city-dropdown-arrow {
+  width: 12px; height: 7px;
+  flex-shrink: 0;
+  color: var(--accent);
+  transition: transform .2s;
+}
+.city-dropdown.is-open .city-dropdown-arrow { transform: rotate(180deg); }
+.city-dropdown-list {
   position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid var(--accent);
-  border-bottom: 2px solid var(--accent);
-  transform: translateY(-65%) rotate(45deg);
-  pointer-events: none;
+  top: calc(100% - 1px);
+  left: 0; right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
+  border-top: none;
+  border-radius: 0 0 22px 22px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  z-index: 200;
+  padding: 4px 8px 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
 }
+.city-dropdown.is-open .city-dropdown-list { display: block; }
+.city-dropdown-item {
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: .9rem;
+  color: var(--text-muted);
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+}
+.city-dropdown-item:hover { background: rgba(255,184,0,.1); color: var(--text); }
+.city-dropdown-item.is-selected { color: var(--accent); font-weight: 600; }
 
 /* Map + list panel */
 .dealers-map-wrap {

@@ -253,8 +253,12 @@ function initMap() {
 }
 
 async function loadCities() {
-  const sel = document.getElementById('dealers-city-select');
-  if (!sel) return;
+  const dropdown = document.getElementById('city-dropdown');
+  const trigger = document.getElementById('city-dropdown-trigger');
+  const label = document.getElementById('city-dropdown-label');
+  const list = document.getElementById('city-dropdown-list');
+  if (!dropdown) return;
+
   let cities;
   try {
     const res = await fetch('./api/dealers.php');
@@ -265,15 +269,35 @@ async function loadCities() {
   } catch(e) {
     cities = DEALERS_FALLBACK.cities;
   }
-  cities.forEach(city => {
-    const opt = document.createElement('option');
-    opt.value = city;
-    opt.textContent = city;
-    sel.appendChild(opt);
+
+  list.innerHTML = cities.map(city =>
+    `<div class="city-dropdown-item" role="option" data-city="${city}">${city}</div>`
+  ).join('');
+
+  trigger.addEventListener('click', () => {
+    const open = dropdown.classList.toggle('is-open');
+    trigger.setAttribute('aria-expanded', String(open));
   });
-  sel.addEventListener('change', () => {
-    if (sel.value) selectCity(sel.value);
+
+  list.addEventListener('click', e => {
+    const item = e.target.closest('.city-dropdown-item');
+    if (!item) return;
+    const city = item.dataset.city;
+    label.textContent = city;
+    trigger.classList.add('has-value');
+    list.querySelectorAll('.city-dropdown-item').forEach(i => i.classList.remove('is-selected'));
+    item.classList.add('is-selected');
+    dropdown.classList.remove('is-open');
+    trigger.setAttribute('aria-expanded', 'false');
+    selectCity(city);
   });
+
+  document.addEventListener('click', e => {
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+  }, true);
 }
 
 async function selectCity(city) {
