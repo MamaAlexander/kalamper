@@ -1,0 +1,17 @@
+{
+  "name": "KALAMPER — Аккумуляторы",
+  "short_name": "KALAMPER",
+  "description": "Автомобильные аккумуляторы KALAMPER (Калампер). Технология термоконтроля, пусковые токи до 940 А.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0D0D0D",
+  "theme_color": "#FFB800",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/assets/brand/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ]
+}
