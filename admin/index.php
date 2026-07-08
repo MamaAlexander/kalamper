@@ -56,10 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         [$lat, $lng] = parse_coords($f('lat'), $f('lng'));
 
         $pdo->prepare("INSERT INTO kalamper_dealers
-            (city,name,phone,address,hours,website,email,lat,lng,sort_order,is_active)
-            VALUES (?,?,?,?,?,?,?,?,?,?,1)")
+            (city,name,address,hours,website,email,lat,lng,sort_order,is_active)
+            VALUES (?,?,?,?,?,?,?,?,?,1)")
             ->execute([
-                $f('city'), $f('name'), $f('phone'), $f('address'),
+                $f('city'), $f('name'), $f('address'),
                 $f('hours'), $f('website'), $f('email'),
                 $lat, $lng, (int)$f('sort_order'),
             ]);
@@ -72,11 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         [$lat, $lng] = parse_coords($f('lat'), $f('lng'));
 
         $pdo->prepare("UPDATE kalamper_dealers SET
-            city=?,name=?,phone=?,address=?,hours=?,website=?,email=?,
+            city=?,name=?,address=?,hours=?,website=?,email=?,
             lat=?,lng=?,sort_order=?,is_active=?
             WHERE id=?")
             ->execute([
-                $f('city'), $f('name'), $f('phone'), $f('address'),
+                $f('city'), $f('name'), $f('address'),
                 $f('hours'), $f('website'), $f('email'),
                 $lat, $lng, (int)$f('sort_order'),
                 isset($_POST['is_active']) ? 1 : 0,
@@ -201,6 +201,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->prepare("UPDATE kalamper_reviews SET is_published=? WHERE id=?")
             ->execute([(int)($_POST['val'] ?? 0), (int)($_POST['id'] ?? 0)]);
 
+    // ── Настройки: контактный телефон ──────────────────────────────────────────
+
+    } elseif ($act === 'save_contact_phone') {
+        $activeTab = 'settings';
+        $phone = trim($_POST['contact_phone'] ?? '');
+        $pdo->prepare("INSERT INTO kalamper_settings (`key`,`value`) VALUES ('contact_phone',?) ON DUPLICATE KEY UPDATE `value`=?")
+            ->execute([$phone, $phone]);
+        $flashOk = 'Контактный телефон сохранён.';
+
     // ── Настройки: смена пароля ─────────────────────────────────────────────────
 
     } elseif ($act === 'change_password') {
@@ -279,6 +288,8 @@ $activeTab = $_GET['tab'] ?? 'dealers';
 $dealers = $pdo->query("SELECT * FROM kalamper_dealers ORDER BY sort_order, id")->fetchAll(PDO::FETCH_ASSOC);
 $reviews = $pdo->query("SELECT * FROM kalamper_reviews ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
 $users   = $pdo->query("SELECT id, email, created_at FROM kalamper_users ORDER BY created_at")->fetchAll(PDO::FETCH_ASSOC);
+$s = $pdo->query("SELECT value FROM kalamper_settings WHERE `key`='contact_phone' LIMIT 1");
+$currentContactPhone = $s ? (string)($s->fetchColumn() ?: '') : '';
 
 $editDealerId = (int)($_GET['edit_dealer'] ?? 0);
 $editReviewId = (int)($_GET['edit_review'] ?? 0);
@@ -589,8 +600,6 @@ input[type="checkbox"] { width: 15px; height: 15px; accent-color: #FFB800; curso
                 <input type="text" name="city" required></div>
             <div class="form-group"><label>Название *</label>
                 <input type="text" name="name" required></div>
-            <div class="form-group"><label>Телефон</label>
-                <input type="tel" name="phone"></div>
             <div class="form-group"><label>Адрес</label>
                 <input type="text" name="address"></div>
             <div class="form-group"><label>Часы работы</label>
@@ -628,7 +637,6 @@ input[type="checkbox"] { width: 15px; height: 15px; accent-color: #FFB800; curso
                     <th>#</th>
                     <th>Город</th>
                     <th>Название</th>
-                    <th>Телефон</th>
                     <th>Адрес</th>
                     <th>Статус</th>
                     <th>Действия</th>
@@ -640,7 +648,6 @@ input[type="checkbox"] { width: 15px; height: 15px; accent-color: #FFB800; curso
                     <td style="color:#444"><?= $i + 1 ?></td>
                     <td><?= h($d['city']) ?></td>
                     <td><?= h($d['name']) ?></td>
-                    <td style="white-space:nowrap"><?= h($d['phone']) ?></td>
                     <td class="truncate"><?= h($d['address']) ?></td>
                     <td>
                         <form method="post" style="margin:0">
@@ -682,8 +689,6 @@ input[type="checkbox"] { width: 15px; height: 15px; accent-color: #FFB800; curso
                                         <input type="text" name="city" value="<?= h($d['city']) ?>" required></div>
                                     <div class="form-group"><label>Название</label>
                                         <input type="text" name="name" value="<?= h($d['name']) ?>" required></div>
-                                    <div class="form-group"><label>Телефон</label>
-                                        <input type="tel" name="phone" value="<?= h($d['phone']) ?>"></div>
                                     <div class="form-group"><label>Адрес</label>
                                         <input type="text" name="address" value="<?= h($d['address']) ?>"></div>
                                     <div class="form-group"><label>Часы работы</label>
@@ -871,6 +876,23 @@ input[type="checkbox"] { width: 15px; height: 15px; accent-color: #FFB800; curso
      НАСТРОЙКИ
 ════════════════════════════════════════════════════════════════════════════ -->
 <?php elseif ($activeTab === 'settings'): ?>
+
+<!-- Контактный телефон -->
+<div class="card">
+    <div class="card-title">Контактный телефон</div>
+    <p style="color:#888;font-size:14px;margin-bottom:16px">
+        Этот номер отображается на всех карточках дилеров вместо индивидуальных телефонов.
+    </p>
+    <form method="post" style="max-width:420px">
+        <?= csrf_field() ?>
+        <input type="hidden" name="act" value="save_contact_phone">
+        <div class="form-group" style="margin-bottom:16px">
+            <label>Номер телефона</label>
+            <input type="tel" name="contact_phone" value="<?= h($currentContactPhone) ?>" placeholder="+7 (XXX) XXX-XX-XX">
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
 
 <!-- Смена пароля -->
 <div class="card">

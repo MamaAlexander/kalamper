@@ -106,6 +106,14 @@ function admin_setup_db(): void {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
+    // Настройки сайта (key-value)
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS `kalamper_settings` (
+            `key`   VARCHAR(64) NOT NULL PRIMARY KEY,
+            `value` TEXT NOT NULL DEFAULT ''
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    ");
+
     // Сид-пользователь
     $seedEmail    = 'reco1@akb-centr.com';
     $seedPassword = 'z928wwM4!';
