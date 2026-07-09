@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Страница не найдена | KALAMPER</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="icon" href="./assets/brand/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/brand/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&display=optional" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/site.css?v=5">
+  <style>
+    .e404-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .e404-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 24px 80px;
+    }
+
+    /* Background grid */
+    .e404-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .e404-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,184,0,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,184,0,.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .e404-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      animation: e404pulse 4s ease-in-out infinite;
+    }
+    .e404-glow--1 {
+      width: 500px; height: 500px;
+      background: rgba(255,184,0,.12);
+      top: -100px; left: 50%;
+      transform: translateX(-60%);
+    }
+    .e404-glow--2 {
+      width: 300px; height: 300px;
+      background: rgba(255,184,0,.07);
+      bottom: 0; right: 10%;
+      animation-delay: 2s;
+    }
+    @keyframes e404pulse {
+      0%, 100% { opacity: .6; transform: scale(1) translateX(-60%); }
+      50% { opacity: 1; transform: scale(1.1) translateX(-60%); }
+    }
+    .e404-glow--2 {
+      animation: e404pulse2 4s ease-in-out 2s infinite;
+    }
+    @keyframes e404pulse2 {
+      0%, 100% { opacity: .4; transform: scale(1); }
+      50% { opacity: .8; transform: scale(1.15); }
+    }
+
+    /* Content */
+    .e404-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 640px;
+    }
+
+    /* Big battery SVG */
+    .e404-battery {
+      width: 120px;
+      height: 60px;
+      margin: 0 auto 32px;
+      display: block;
+    }
+    .battery-body {
+      rx: 6;
+    }
+    .battery-fill {
+      animation: batteryDrain 3s ease-in-out infinite;
+    }
+    .battery-blink {
+      animation: blink 1.2s step-start infinite;
+    }
+    @keyframes batteryDrain {
+      0%, 30% { width: 18px; opacity: 1; }
+      60%, 90% { width: 4px; opacity: .5; }
+      100% { width: 18px; opacity: 1; }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* 404 number */
+    .e404-code {
+      font-size: clamp(100px, 18vw, 180px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -4px;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .e404-code .digit {
+      color: #ffffff;
+    }
+    .e404-code .digit--accent {
+      color: var(--accent, #FFB800);
+      position: relative;
+    }
+    .e404-code .digit--zero {
+      color: #2a2a2a;
+      text-shadow:
+        0 0 40px rgba(255,184,0,.3),
+        0 0 80px rgba(255,184,0,.15);
+      position: relative;
+    }
+    .e404-code .digit--zero::before {
+      content: '0';
+      position: absolute;
+      inset: 0;
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(255,184,0,.4);
+    }
+
+    .e404-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent, #FFB800);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .e404-eyebrow::before,
+    .e404-eyebrow::after {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: rgba(255,184,0,.4);
+    }
+
+    .e404-title {
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 14px;
+    }
+    .e404-desc {
+      font-size: 16px;
+      color: var(--text-muted, #888);
+      line-height: 1.6;
+      margin: 0 0 40px;
+    }
+    .e404-desc strong {
+      color: rgba(255,255,255,.7);
+    }
+
+    /* Actions */
+    .e404-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    /* Quick links */
+    .e404-links {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .e404-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.1);
+      color: rgba(255,255,255,.6);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .e404-link:hover {
+      border-color: rgba(255,184,0,.4);
+      color: #FFB800;
+      background: rgba(255,184,0,.06);
+    }
+    .e404-link svg {
+      flex-shrink: 0;
+      opacity: .7;
+    }
+
+    /* Divider line */
+    .e404-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,.06);
+      margin: 48px 0 0;
+    }
+
+    @media (max-width: 480px) {
+      .e404-code { letter-spacing: -2px; }
+      .e404-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a class="brand-logo" href="./" aria-label="KALAMPER — на главную">
+        <img src="./assets/brand/kalamper-logo.svg" alt="KALAMPER" width="180" height="39">
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+        <a class="nav-link" href="./#about">О бренде</a>
+        <a class="nav-link" href="./#technologies">Технологии</a>
+        <a class="nav-link" href="./#catalog">Каталог</a>
+        <a class="nav-link" href="./#dealers">Где купить</a>
+        <a class="nav-link nav-link--cta" href="./#contact">Связаться</a>
+      </nav>
+      <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav" aria-label="Открыть меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="e404-wrap">
+    <main class="e404-main">
+      <!-- Background -->
+      <div class="e404-bg" aria-hidden="true">
+        <div class="e404-grid"></div>
+        <div class="e404-glow e404-glow--1"></div>
+        <div class="e404-glow e404-glow--2"></div>
+      </div>
+
+      <div class="e404-content">
+
+        <!-- Dead battery icon -->
+        <svg class="e404-battery" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Battery body -->
+          <rect class="battery-body" x="2" y="10" width="106" height="40" rx="6" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+          <!-- Terminal -->
+          <rect x="108" y="22" width="10" height="16" rx="3" fill="rgba(255,255,255,0.15)"/>
+          <!-- Fill (draining) -->
+          <rect class="battery-fill" x="8" y="16" width="18" height="28" rx="3" fill="#FFB800"/>
+          <!-- Warning bolt -->
+          <g class="battery-blink">
+            <path d="M55 14 L45 32 L56 32 L44 46 L66 28 L54 28 Z" fill="rgba(255,184,0,0.5)" stroke="rgba(255,184,0,0.8)" stroke-width="1" stroke-linejoin="round"/>
+          </g>
+        </svg>
+
+        <!-- Eyebrow -->
+        <p class="e404-eyebrow">Ошибка</p>
+
+        <!-- 404 digits -->
+        <div class="e404-code" aria-label="404">
+          <span class="digit digit--accent">4</span>
+          <span class="digit digit--zero">0</span>
+          <span class="digit digit--accent">4</span>
+        </div>
+
+        <h1 class="e404-title">Страница разряжена</h1>
+        <p class="e404-desc">
+          Эта страница не найдена или была перемещена.<br>
+          Вернитесь на главную или выберите нужный раздел.
+        </p>
+
+        <!-- Main actions -->
+        <div class="e404-actions">
+          <a class="btn btn--primary" href="./">На главную</a>
+          <a class="btn btn--outline" href="./#catalog">Каталог моделей</a>
+        </div>
+
+        <!-- Quick links -->
+        <div class="e404-links">
+          <a class="e404-link" href="./#dealers">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" fill="currentColor"/></svg>
+            Где купить
+          </a>
+          <a class="e404-link" href="./#technologies">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Технологии
+          </a>
+          <a class="e404-link" href="./#contact">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 1v1.5a1 1 0 01-.8.98l-.7.14a10 10 0 004.38 4.38l.14-.7A1 1 0 0111.5 9.5H13a1 1 0 011 1V13a1 1 0 01-1 1h-1C6.37 14 2 9.63 2 4V3z" fill="currentColor"/></svg>
+            Связаться
+          </a>
+          <a class="e404-link" href="mailto:info@kalamper.ru">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M1 5l7 5 7-5" stroke="currentColor" stroke-width="1.5"/></svg>
+            info@kalamper.ru
+          </a>
+        </div>
+
+        <div class="e404-divider"></div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="container footer-top-inner">
+          <div class="footer-brand-col">
+            <img src="./assets/brand/kalamper-logo.svg" alt="KALAMPER" width="170" height="37" class="footer-logo">
+            <p class="footer-tagline">Стартерные аккумуляторные батареи нового поколения. Производство Россия, завод АКОМ.</p>
+            <div class="footer-contacts">
+              <a href="tel:+78002018111" class="footer-phone" data-site-phone>8 800 201-81-11</a>
+              <span class="footer-phone-note">Бесплатно по России</span>
+              <a href="mailto:info@kalamper.ru" class="footer-email">info@kalamper.ru</a>
+            </div>
+          </div>
+          <div class="footer-nav-col">
+            <h4 class="footer-nav-title">Компания</h4>
+            <nav class="footer-nav-links">
+              <a href="./#about">О бренде</a>
+              <a href="./#factory">Производство</a>
+              <a href="./#technologies">Технологии</a>
+              <a href="./#catalog">Каталог</a>
+              <a href="./#dealers">Где купить</a>
+              <a href="./#contact">Контакты</a>
+            </nav>
+          </div>
+          <div class="footer-nav-col">
+            <h4 class="footer-nav-title">Продукция</h4>
+            <nav class="footer-nav-links">
+              <a href="./catalog/k60.html">KALAMPER 6СТ-60</a>
+              <a href="./catalog/k65.html">KALAMPER 6СТ-65</a>
+              <a href="./catalog/k75.html">KALAMPER 6СТ-75</a>
+              <a href="./catalog/k100.html">KALAMPER 6СТ-100</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+          <p class="footer-copy">© <span id="footer-year"></span> KALAMPER. Все права защищены.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script defer src="./assets/js/site.js?v=5"></script>
+  <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
