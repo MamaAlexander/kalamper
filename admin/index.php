@@ -201,14 +201,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->prepare("UPDATE kalamper_reviews SET is_published=? WHERE id=?")
             ->execute([(int)($_POST['val'] ?? 0), (int)($_POST['id'] ?? 0)]);
 
-    // ── Настройки: контактный телефон ──────────────────────────────────────────
+    // ── Настройки: контактные данные сайта ────────────────────────────────────
 
-    } elseif ($act === 'save_contact_phone') {
+    } elseif ($act === 'save_contact_settings') {
         $activeTab = 'settings';
         $phone = trim($_POST['contact_phone'] ?? '');
+        $email = trim($_POST['contact_email'] ?? '');
         $pdo->prepare("INSERT INTO kalamper_settings (`key`,`value`) VALUES ('contact_phone',?) ON DUPLICATE KEY UPDATE `value`=?")
             ->execute([$phone, $phone]);
-        $flashOk = 'Контактный телефон сохранён.';
+        $pdo->prepare("INSERT INTO kalamper_settings (`key`,`value`) VALUES ('contact_email',?) ON DUPLICATE KEY UPDATE `value`=?")
+            ->execute([$email, $email]);
+        $flashOk = 'Контактные данные сохранены.';
 
     // ── Настройки: смена пароля ─────────────────────────────────────────────────
 
@@ -288,8 +291,15 @@ $activeTab = $_GET['tab'] ?? 'dealers';
 $dealers = $pdo->query("SELECT * FROM kalamper_dealers ORDER BY sort_order, id")->fetchAll(PDO::FETCH_ASSOC);
 $reviews = $pdo->query("SELECT * FROM kalamper_reviews ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
 $users   = $pdo->query("SELECT id, email, created_at FROM kalamper_users ORDER BY created_at")->fetchAll(PDO::FETCH_ASSOC);
-$s = $pdo->query("SELECT value FROM kalamper_settings WHERE `key`='contact_phone' LIMIT 1");
-$currentContactPhone = $s ? (string)($s->fetchColumn() ?: '') : '';
+$settingsRows = $pdo->query("SELECT `key`,`value` FROM kalamper_settings WHERE `key` IN ('contact_phone','contact_email')");
+$currentContactPhone = '';
+$currentContactEmail = '';
+if ($settingsRows) {
+    foreach ($settingsRows->fetchAll(PDO::FETCH_ASSOC) as $sr) {
+        if ($sr['key'] === 'contact_phone') $currentContactPhone = (string)$sr['value'];
+        if ($sr['key'] === 'contact_email')  $currentContactEmail  = (string)$sr['value'];
+    }
+}
 
 $editDealerId = (int)($_GET['edit_dealer'] ?? 0);
 $editReviewId = (int)($_GET['edit_review'] ?? 0);
@@ -877,18 +887,22 @@ input[type="checkbox"] { width: 15px; height: 15px; accent-color: #FFB800; curso
 ════════════════════════════════════════════════════════════════════════════ -->
 <?php elseif ($activeTab === 'settings'): ?>
 
-<!-- Контактный телефон -->
+<!-- Контактные данные сайта -->
 <div class="card">
-    <div class="card-title">Контактный телефон</div>
-    <p style="color:#888;font-size:14px;margin-bottom:16px">
-        Этот номер отображается на всех карточках дилеров вместо индивидуальных телефонов.
+    <div class="card-title">Контактные данные сайта</div>
+    <p style="color:#888;font-size:14px;margin-bottom:20px">
+        Телефон и email отображаются на всех страницах сайта (шапка, футер, CTA-блок) и на карточках дилеров. Одно поле — один источник правды для всего сайта.
     </p>
-    <form method="post" style="max-width:420px">
+    <form method="post" style="max-width:500px">
         <?= csrf_field() ?>
-        <input type="hidden" name="act" value="save_contact_phone">
-        <div class="form-group" style="margin-bottom:16px">
-            <label>Номер телефона</label>
-            <input type="tel" name="contact_phone" value="<?= h($currentContactPhone) ?>" placeholder="+7 (XXX) XXX-XX-XX">
+        <input type="hidden" name="act" value="save_contact_settings">
+        <div class="form-group" style="margin-bottom:14px">
+            <label>Горячая линия (телефон)</label>
+            <input type="tel" name="contact_phone" value="<?= h($currentContactPhone) ?>" placeholder="8 800 000-00-00">
+        </div>
+        <div class="form-group" style="margin-bottom:20px">
+            <label>Email для связи</label>
+            <input type="email" name="contact_email" value="<?= h($currentContactEmail) ?>" placeholder="info@kalamper.ru">
         </div>
         <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>

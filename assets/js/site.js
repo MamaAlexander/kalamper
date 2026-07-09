@@ -463,8 +463,9 @@ const _apiBase = (() => {
 })();
 
 async function updateSitePhones() {
-  const els = document.querySelectorAll('[data-site-phone],[data-site-phone-href]');
-  if (!els.length) return;
+  const hasPhone = document.querySelector('[data-site-phone],[data-site-phone-href]');
+  const hasEmail = document.querySelector('[data-site-email],[data-site-email-href]');
+  if (!hasPhone && !hasEmail) return;
   try {
     const ac = new AbortController();
     const timer = setTimeout(() => ac.abort(), 3000);
@@ -472,16 +473,27 @@ async function updateSitePhones() {
     clearTimeout(timer);
     if (!res.ok) return;
     const data = await res.json();
-    if (!data.ok || !data.phone) return;
-    const phone = data.phone;
-    const phoneHref = 'tel:' + phone.replace(/\D/g, '');
-    document.querySelectorAll('[data-site-phone]').forEach(el => {
-      el.href = phoneHref;
-      el.textContent = phone;
-    });
-    document.querySelectorAll('[data-site-phone-href]').forEach(el => {
-      el.href = phoneHref;
-    });
+    if (!data.ok) return;
+    if (data.phone) {
+      const phoneHref = 'tel:' + data.phone.replace(/\D/g, '');
+      document.querySelectorAll('[data-site-phone]').forEach(el => {
+        el.href = phoneHref;
+        el.textContent = data.phone;
+      });
+      document.querySelectorAll('[data-site-phone-href]').forEach(el => {
+        el.href = phoneHref;
+      });
+    }
+    if (data.email) {
+      const emailHref = 'mailto:' + data.email;
+      document.querySelectorAll('[data-site-email]').forEach(el => {
+        el.href = emailHref;
+        el.textContent = data.email;
+      });
+      document.querySelectorAll('[data-site-email-href]').forEach(el => {
+        el.href = emailHref;
+      });
+    }
   } catch(e) {}
 }
 

@@ -8,11 +8,17 @@ try {
     kalamper_initialize_database();
     $pdo = kalamper_pdo();
 
-    // Global contact phone from settings
+    // Global contact settings
     $globalPhone = '';
+    $globalEmail = '';
     try {
-        $s = $pdo->query("SELECT value FROM kalamper_settings WHERE `key`='contact_phone' LIMIT 1");
-        if ($s) $globalPhone = (string)($s->fetchColumn() ?: '');
+        $s = $pdo->query("SELECT `key`,`value` FROM kalamper_settings WHERE `key` IN ('contact_phone','contact_email')");
+        if ($s) {
+            foreach ($s->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                if ($row['key'] === 'contact_phone') $globalPhone = (string)$row['value'];
+                if ($row['key'] === 'contact_email') $globalEmail = (string)$row['value'];
+            }
+        }
     } catch (Throwable $e) {}
 
     $city = trim($_GET['city'] ?? '');
@@ -30,7 +36,7 @@ try {
     } else {
         $stmt = $pdo->query('SELECT DISTINCT city FROM kalamper_dealers WHERE is_active=1 ORDER BY sort_order,city');
         $cities = array_column($stmt->fetchAll(), 'city');
-        echo json_encode(['ok'=>true,'cities'=>$cities,'phone'=>$globalPhone], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['ok'=>true,'cities'=>$cities,'phone'=>$globalPhone,'email'=>$globalEmail], JSON_UNESCAPED_UNICODE);
     }
 } catch (Throwable $e) {
     http_response_code(500);
