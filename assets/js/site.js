@@ -456,6 +456,36 @@ function focusDealer(i) {
   }
 }
 
+// ═══ GLOBAL PHONE UPDATE ═══
+const _apiBase = (() => {
+  const p = window.location.pathname;
+  return (p.includes('/catalog/') || p.includes('/technologies/')) ? '../' : './';
+})();
+
+async function updateSitePhones() {
+  const els = document.querySelectorAll('[data-site-phone],[data-site-phone-href]');
+  if (!els.length) return;
+  try {
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), 3000);
+    const res = await fetch(_apiBase + 'api/dealers.php', { signal: ac.signal });
+    clearTimeout(timer);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.ok || !data.phone) return;
+    const phone = data.phone;
+    const phoneHref = 'tel:' + phone.replace(/\D/g, '');
+    document.querySelectorAll('[data-site-phone]').forEach(el => {
+      el.href = phoneHref;
+      el.textContent = phone;
+    });
+    document.querySelectorAll('[data-site-phone-href]').forEach(el => {
+      el.href = phoneHref;
+    });
+  } catch(e) {}
+}
+
+updateSitePhones();
 loadCities();
 
 // ═══ FOOTER YEAR ═══
