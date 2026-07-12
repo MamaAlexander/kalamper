@@ -405,7 +405,7 @@ async function selectCity(city) {
       </div>
       <div class="dealer-detail">
         <svg viewBox="0 0 16 16" fill="none"><path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 1v1.5a1 1 0 01-.8.98l-.7.14a10 10 0 004.38 4.38l.14-.7A1 1 0 0111.5 9.5H13a1 1 0 011 1V13a1 1 0 01-1 1h-1C6.37 14 2 9.63 2 4V3z" fill="currentColor"/></svg>
-        <a class="dealer-phone-link" href="tel:${d.phone.replace(/\D/g,'')}">${d.phone}</a>
+        <a class="dealer-phone-link" href="tel:${d.phone.replace(/\D/g,'')}" onclick="if(typeof ym==='function')ym(110620127,'reachGoal','phone_dealer')">${d.phone}</a>
       </div>
       ${d.hours ? `<div class="dealer-detail"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>${d.hours}</div>` : ''}
     </div>`).join('');
@@ -418,7 +418,7 @@ async function selectCity(city) {
     const withCoords = dealers.filter(d => d.lat && d.lng);
     withCoords.forEach((d, i) => {
       const pm = new ymaps.Placemark([d.lat, d.lng], {
-        balloonContentBody: `<b>${d.name}</b><br>${d.address}<br><a href="tel:${d.phone.replace(/\D/g,'')}">${d.phone}</a>`,
+        balloonContentBody: `<b>${d.name}</b><br>${d.address}<br><a href="tel:${d.phone.replace(/\D/g,'')}" onclick="if(typeof ym==='function')ym(110620127,'reachGoal','phone_dealer')">${d.phone}</a>`,
         hintContent: d.name,
       }, {
         preset: 'islands#yellowDotIcon',
@@ -479,6 +479,7 @@ async function updateSitePhones() {
       document.querySelectorAll('[data-site-phone]').forEach(el => {
         el.href = phoneHref;
         el.textContent = data.phone;
+        el.addEventListener('click', () => { if (typeof ym === 'function') ym(110620127, 'reachGoal', 'phone_hotline'); });
       });
       document.querySelectorAll('[data-site-phone-href]').forEach(el => {
         el.href = phoneHref;
@@ -592,3 +593,8 @@ document.getElementById('review-form')?.addEventListener('submit', async (e) => 
 });
 
 loadReviews();
+
+// ═══ METRIKA GOALS ═══
+document.querySelectorAll('a[href*="#dealers"]').forEach(el => {
+  el.addEventListener('click', () => { if (typeof ym === 'function') ym(110620127, 'reachGoal', 'find_dealer'); });
+});
