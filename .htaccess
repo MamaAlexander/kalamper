@@ -40,7 +40,7 @@ RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
   ExpiresByType text/html             "access plus 0 seconds"
 </IfModule>
 
-# Cache-Control fallback
+# Cache-Control fallback + security headers
 <IfModule mod_headers.c>
   <FilesMatch "\.(webp|svg|png|jpg|jpeg|gif|ico|woff2|woff)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
@@ -48,4 +48,11 @@ RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
   <FilesMatch "\.(css|js)$">
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
+
+  # Security headers
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 </IfModule>

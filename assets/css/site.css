@@ -1338,6 +1338,8 @@ body[data-terminal="rus"] .product-img--rus { display: block !important; }
 .footer-bottom-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .footer-copy { color: var(--text-muted); font-size: .8rem; }
 .footer-copy--muted { color: var(--text-dim); }
+.footer-privacy-link { color: var(--text-muted); text-decoration: underline; margin-left: .5em; }
+.footer-privacy-link:hover { color: var(--accent); }
 
 /* ═══ HERO IMG FLIP ═══ */
 
