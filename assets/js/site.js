@@ -250,43 +250,7 @@ if (_dealersSec && 'IntersectionObserver' in window) {
   _preloadObs.observe(_dealersSec);
 }
 
-// Static fallback data (used when PHP API is unavailable, e.g. on Vercel)
-const DEALERS_FALLBACK = {
-  cities: ['Алматы','Астана','Шымкент','Атырау','Москва','Санкт-Петербург','Краснодар','Екатеринбург','Новосибирск'],
-  byCity: {
-    'Алматы': [
-      {name:'АКБ-Центр Алматы',address:'пр. Достык, 5/1',phone:'+7 (727) 300-10-01',hours:'Ежедневно 09:00-20:00',lat:43.2565,lng:76.9286},
-      {name:'АвтоАккумуляторы',address:'ул. Розыбакиева, 247а',phone:'+7 (727) 300-20-02',hours:'Пн-Сб 09:00-19:00',lat:43.2310,lng:76.8870}
-    ],
-    'Астана': [
-      {name:'АКБ Плюс',address:'пр. Туран, 21',phone:'+7 (7172) 28-10-01',hours:'Ежедневно 09:00-20:00',lat:51.1280,lng:71.4305},
-      {name:'АвтоЭнерго',address:'ул. Кенесары, 40',phone:'+7 (7172) 50-20-05',hours:'Пн-Пт 09:00-18:00',lat:51.1801,lng:71.4460}
-    ],
-    'Шымкент': [
-      {name:'АКБ-Маркет',address:'пр. Республики, 33',phone:'+7 (7252) 53-10-01',hours:'Ежедневно 08:00-19:00',lat:42.3417,lng:69.5901}
-    ],
-    'Атырау': [
-      {name:'АвтоБатарея',address:'ул. Азаттык, 55',phone:'+7 (7122) 35-10-02',hours:'Пн-Сб 09:00-18:00',lat:47.1167,lng:51.8833}
-    ],
-    'Москва': [
-      {name:'АвтоМаг на Варшавке',address:'Варшавское ш., 87',phone:'8 (800) 222-07-70',hours:'Ежедневно 08:00-22:00',lat:55.6602,lng:37.6247},
-      {name:'АКБ Сервис МКАД',address:'МКАД 39-й км, 1с2',phone:'8 (495) 777-44-55',hours:'Пн-Вс 09:00-21:00',lat:55.6171,lng:37.4640}
-    ],
-    'Санкт-Петербург': [
-      {name:'Северная АКБ',address:'Московский пр., 100',phone:'8 (812) 600-77-01',hours:'Пн-Сб 09:00-20:00',lat:59.8764,lng:30.3242},
-      {name:'АккумуляторСПб',address:'пр. Энгельса, 150',phone:'8 (812) 600-77-02',hours:'Ежедневно 09:00-21:00',lat:60.0264,lng:30.3417}
-    ],
-    'Краснодар': [
-      {name:'АвтоАккум Юг',address:'ул. Ставропольская, 78',phone:'8 (861) 201-92-01',hours:'Пн-Пт 09:00-19:00',lat:45.0355,lng:38.9753}
-    ],
-    'Екатеринбург': [
-      {name:'УралАКБ',address:'ул. Малышева, 51',phone:'8 (343) 300-10-01',hours:'Пн-Сб 09:00-20:00',lat:56.8379,lng:60.5975}
-    ],
-    'Новосибирск': [
-      {name:'СибАКБ',address:'Красный пр., 220',phone:'8 (383) 200-10-01',hours:'Ежедневно 09:00-19:00',lat:55.0302,lng:82.9265}
-    ]
-  }
-};
+const DEALERS_FALLBACK = { cities: [], byCity: {} };
 
 function initMapInner() {
   if (dealersMap || !document.getElementById('dealers-map')) return;
@@ -315,7 +279,7 @@ async function loadCities() {
   let cities;
   try {
     const ac = new AbortController();
-    const timer = setTimeout(() => ac.abort(), 3000);
+    const timer = setTimeout(() => ac.abort(), 8000);
     const res = await fetch('./api/dealers.php', { signal: ac.signal });
     clearTimeout(timer);
     if (!res.ok) throw new Error('no php');
