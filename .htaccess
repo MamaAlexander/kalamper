@@ -82,11 +82,12 @@ RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
   # base-uri:   self (prevents base-tag injection)
   Header always set Content-Security-Policy "\
 default-src 'self'; \
-script-src 'self' 'unsafe-inline' mc.yandex.ru api-maps.yandex.ru *.yandex.net *.yandex.ru; \
+script-src 'self' 'unsafe-inline' blob: mc.yandex.ru api-maps.yandex.ru *.yandex.net *.yandex.ru *.maps.yandex.net; \
 style-src 'self' 'unsafe-inline' fonts.googleapis.com; \
 font-src 'self' fonts.gstatic.com; \
-img-src 'self' data: mc.yandex.ru *.yandex.ru *.yandex.net *.maps.yandex.net; \
-connect-src 'self' mc.yandex.ru api-maps.yandex.ru *.yandex.ru *.yandex.net suggest-maps.yandex.ru; \
+img-src 'self' data: blob: mc.yandex.ru *.yandex.ru *.yandex.net *.maps.yandex.net; \
+connect-src 'self' mc.yandex.ru api-maps.yandex.ru *.yandex.ru *.yandex.net suggest-maps.yandex.ru *.maps.yandex.net; \
+worker-src blob: *.yandex.ru *.yandex.net; \
 frame-src 'none'; \
 object-src 'none'; \
 base-uri 'self'; \
