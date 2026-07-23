@@ -14,6 +14,16 @@ RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)$ [NC]
 RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Block direct browser access to /api/ (allow only XMLHttpRequest/fetch from same site)
+<IfModule mod_rewrite.c>
+  RewriteCond %{REQUEST_URI} ^/api/
+  RewriteCond %{HTTP_X_REQUESTED_WITH} !^XMLHttpRequest$ [NC]
+  RewriteCond %{HTTP_ACCEPT} !application/json [NC]
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?kalamper\.ru [NC]
+  RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)$ [NC]
+  RewriteRule ^ - [F,L]
+</IfModule>
+
 # ── Gzip compression ──
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml text/xml application/xml
@@ -32,16 +42,16 @@ RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
   # Fonts — 1 year
   ExpiresByType font/woff2            "access plus 1 year"
   ExpiresByType font/woff             "access plus 1 year"
-  # CSS/JS — 1 month (versioned via query string if needed)
+  # CSS/JS — 1 month
   ExpiresByType text/css              "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
   ExpiresByType text/javascript       "access plus 1 month"
-  # HTML — no cache (always fresh)
+  # HTML — no cache
   ExpiresByType text/html             "access plus 0 seconds"
 </IfModule>
 
-# Cache-Control fallback + security headers
 <IfModule mod_headers.c>
+  # ── Cache-Control ──
   <FilesMatch "\.(webp|svg|png|jpg|jpeg|gif|ico|woff2|woff)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
@@ -49,10 +59,36 @@ RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
 
-  # Security headers
+  # ── Hide server information ──
+  Header always unset X-Powered-By
+  Header always unset Server
+  Header always set X-Powered-By "KALAMPER"
+
+  # ── Security headers ──
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
-  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+
+  # ── Content Security Policy ──
+  # script-src: self + inline (Metrika init) + Yandex services
+  # style-src:  self + inline (theme vars) + Google Fonts
+  # img-src:    self + data URIs + Yandex (Metrika pixel, maps tiles)
+  # connect-src: self + Yandex APIs
+  # font-src:   self + Google Fonts static
+  # frame-src:  none (no iframes used)
+  # object-src: none (no Flash/plugins)
+  # base-uri:   self (prevents base-tag injection)
+  Header always set Content-Security-Policy "\
+default-src 'self'; \
+script-src 'self' 'unsafe-inline' mc.yandex.ru api-maps.yandex.ru *.yandex.net *.yandex.ru; \
+style-src 'self' 'unsafe-inline' fonts.googleapis.com; \
+font-src 'self' fonts.gstatic.com; \
+img-src 'self' data: mc.yandex.ru *.yandex.ru *.yandex.net *.maps.yandex.net; \
+connect-src 'self' mc.yandex.ru api-maps.yandex.ru *.yandex.ru *.yandex.net suggest-maps.yandex.ru; \
+frame-src 'none'; \
+object-src 'none'; \
+base-uri 'self'; \
+form-action 'self';"
 </IfModule>

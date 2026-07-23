@@ -494,6 +494,8 @@ async function loadReviews() {
 
 function openReviewModal() {
   document.getElementById('review-modal').hidden = false;
+  var tsEl = document.getElementById('review-ts');
+  if (tsEl) tsEl.value = Math.floor(Date.now() / 1000);
   document.body.style.overflow = 'hidden';
 }
 function closeReviewModal() {
@@ -538,7 +540,9 @@ document.getElementById('review-form')?.addEventListener('submit', async (e) => 
         name: document.getElementById('review-name').value,
         email: document.getElementById('review-email').value,
         rating,
-        review: document.getElementById('review-text').value
+        review: document.getElementById('review-text').value,
+        website: document.getElementById('review-website')?.value || '',
+        _t: parseInt(document.getElementById('review-ts')?.value || '0')
       })
     });
     const data = await res.json();

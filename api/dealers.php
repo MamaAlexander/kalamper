@@ -1,8 +1,17 @@
 <?php
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/rate_limit.php';
 
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (preg_match('#^https?://(www\.)?kalamper\.ru$#i', $origin)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+} else {
+    header('Access-Control-Allow-Origin: http://localhost');
+}
+
+// Rate limit: max 60 requests per IP per minute
+kalamper_rate_limit('dealers_get', 60, 60);
 
 try {
     kalamper_initialize_database();

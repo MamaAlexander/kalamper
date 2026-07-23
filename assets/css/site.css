@@ -1361,3 +1361,77 @@ body[data-terminal="rus"] .product-img--rus { display: block !important; }
   .footer-top-inner { grid-template-columns: 1fr; gap: 36px; }
   .footer-bottom-inner { flex-direction: column; text-align: center; }
 }
+
+/* ═══ COOKIE CONSENT BANNER ═══ */
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: #1a1a1a;
+  border-top: 1px solid rgba(255,184,0,.25);
+  padding: 16px 20px;
+  box-shadow: 0 -4px 24px rgba(0,0,0,.5);
+}
+.cookie-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.cookie-text {
+  flex: 1;
+  min-width: 260px;
+  font-size: .875rem;
+  line-height: 1.55;
+  color: #ccc;
+  margin: 0;
+}
+.cookie-text a { color: #FFB800; text-decoration: underline; }
+.cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.cookie-btn {
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity .15s;
+  white-space: nowrap;
+}
+.cookie-btn:hover { opacity: .85; }
+.cookie-btn--primary { background: #FFB800; color: #0d0d0d; }
+.cookie-btn--outline { background: transparent; color: #ccc; border: 1px solid rgba(255,255,255,.2); }
+@media (max-width: 600px) {
+  .cookie-inner { flex-direction: column; align-items: flex-start; }
+  .cookie-actions { width: 100%; }
+  .cookie-btn { flex: 1; text-align: center; }
+}
+
+/* ═══ FOOTER REQUISITES ═══ */
+.footer-requisites {
+  font-size: .72rem;
+  color: var(--text-muted, #555);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ═══ CATALOG NOTICES ═══ */
+.catalog-notice {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 0 0 28px;
+}
+.catalog-notice p {
+  font-size: .8rem;
+  color: var(--text-muted, #777);
+  line-height: 1.55;
+  margin: 0;
+}
+.catalog-notice p + p { margin-top: 8px; }
+.catalog-notice strong { color: var(--color-text-secondary, #aaa); }

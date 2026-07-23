@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -47,19 +47,7 @@
     imagesrcset="./assets/images/products/k65-hero2-640.webp 640w, ./assets/images/products/k65-hero2-960.webp 960w, ./assets/images/products/k65-hero2-1200.webp 1200w"
     imagesizes="(max-width: 768px) 90vw, 46vw">
   <script defer src="./assets/js/site.js?v=7"></script>
-
-  <!-- Yandex.Metrika counter -->
-  <script type="text/javascript">
-      (function(m,e,t,r,i,k,a){
-          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-          m[i].l=1*new Date();
-          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110620127', 'ym');
-      ym(110620127, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-  </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/110620127" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-  <!-- /Yandex.Metrika counter -->
+  <script src="/assets/js/cookie-consent.js"></script>
 </head>
 <body>
 
@@ -667,6 +655,12 @@
             <label for="review-text">Отзыв *</label>
             <textarea id="review-text" name="review" required placeholder="Расскажите о своём опыте использования KALAMPER..." rows="4"></textarea>
           </div>
+          <!-- Honeypot: hidden from users, bots fill it -->
+          <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;pointer-events:none;" aria-hidden="true">
+            <label for="review-website">Сайт (не заполнять)</label>
+            <input type="text" id="review-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="hidden" id="review-ts" name="_t">
           <div class="form-status" id="review-form-status"></div>
           <button type="submit" class="btn btn--primary btn--full" id="review-submit">Отправить отзыв</button>
         </form>
@@ -749,6 +743,7 @@
     <div class="footer-bottom">
       <div class="container footer-bottom-inner">
         <p class="footer-copy">© <span id="footer-year"></span> KALAMPER. Все права защищены. <a href="./privacy.html" class="footer-privacy-link">Политика конфиденциальности</a> <a href="./agreement.html" class="footer-privacy-link">Пользовательское соглашение</a></p>
+        <p class="footer-requisites">ООО «АКБ-Центр» · ИНН 2630047097 · ОГРН 1162651058118 · 357202, Ставропольский край, г. Минеральные Воды, ул. Московская, д. 29а</p>
       </div>
     </div>
   </footer>
