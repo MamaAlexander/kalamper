@@ -89,4 +89,11 @@
     <priority>0.2</priority>
   </url>
 
+  <url>
+    <loc>https://www.kalamper.ru/agreement.html</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+
 </urlset>
